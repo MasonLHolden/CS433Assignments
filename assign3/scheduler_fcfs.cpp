@@ -28,18 +28,15 @@ SchedulerFCFS::~SchedulerFCFS()
 void SchedulerFCFS::init(vector<PCB>& process_list)
 {
   //copy of list
-  processes = process_list;
+  vector<PCB> processes = process_list;
 
   //reset sim time
-  current_time = 0;
-
-  //clear from previous attempts
-  turnaround_times.clear();
-  waiting_times.clear();
+   float current_time = 0;
 
   //allocate space
+
   turnaround_times.resize(processes.size());
-  waiting_times.resize(process.size());
+  waiting_times.resize(processes.size());
 
   //sort for FCFS
   sort(processes.begin(), processes.end(),[](const PCB& a, const PCB& b){return a.arrival_time < b.arrival_time;});
@@ -50,12 +47,15 @@ void SchedulerFCFS::print_results()
 {
   cout<<"FCFS Results"<<endl<<endl<<"------------------"<<endl<<endl;
 
-  for(size_t i =0; i< processes.size(); i++)
+  for(int i =0; i< 5/*processes.size()*/; i++)
     {
-        cout<<"Process: "<<processes[i].pid<<" "<<"Turnaround Time: "<<turnaround_times[i]<<" "<<"Wait time: "<<waiting_times[i]<<endl<<endl;
+      cout<< "in da loop"<<endl;
+        cout<<"Process: "<<processes[i].id<<" "<<"Turnaround Time: "<<turnaround_times[i]<<" "<<"Wait time: "<<waiting_times[i]<<endl<<endl; //seg fault happens here
+
     }
-  double avg_turnaround = accumulate(turnaround_times.begin(), turnaround_times.end(),0.0)/turnaround_times.size();
-  double avg_waiting = accumulate(waiting_times.begin(), waiting_times.end(),0.0)/waiting_times.size();
+    cout<<"HERE"<<endl;
+   //avg_turnaround = accumulate(turnaround_times.begin(), turnaround_times.end(),0.0)/turnaround_times.size();
+   //avg_waiting = accumulate(waiting_times.begin(), waiting_times.end(),0.0)/waiting_times.size();
 
   cout<<"Avg Turnaround Time: "<<avg_turnaround<<endl;
   cout<<"Avg Wait Time: "<<avg_waiting<<endl;
@@ -65,6 +65,32 @@ void SchedulerFCFS::print_results()
 //simulation
 void SchedulerFCFS::simulate()
 {
+
+    float Sum_turnaround_times=0.0;
+    avg_turnaround = 0;
+    avg_waiting = 0;
+    /*
+     adding up the times
+     avg = times / number of times
+
+     total
+    number of times
+
+
+
+     */
+    int j = 0; //j is the number of individual times we have
+    cout<<"turnaround size: "<<turnaround_times.size()<<endl;
+    for (int i =0; i<turnaround_times.size()/2; i++){
+        cout<<"HELP!"<<endl;
+
+        for (j=turnaround_times.size(); j >turnaround_times.size()/2;j--) {
+            Sum_turnaround_times = turnaround_times[i] + turnaround_times[j];
+            cout<<"turnaround times at i:"<<i<<" at j: "<<j<<endl;
+            avg_turnaround = Sum_turnaround_times/turnaround_times.size();
+        }
+    }
+
 
 }
 
