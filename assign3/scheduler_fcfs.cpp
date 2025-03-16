@@ -47,7 +47,7 @@ void SchedulerFCFS::print_results()
 {
   cout<<"FCFS Results"<<endl<<endl<<"------------------"<<endl<<endl;
 
-  for(int i =0; i< 5/*processes.size()*/; i++)
+  for(int i =0; i< processes.size(); i++)
     {
       cout<< "in da loop"<<endl;
         cout<<"Process: "<<processes[i].id<<" "<<"Turnaround Time: "<<turnaround_times[i]<<" "<<"Wait time: "<<waiting_times[i]<<endl<<endl; //seg fault happens here
@@ -68,30 +68,52 @@ void SchedulerFCFS::simulate()
 
     float Sum_turnaround_times=0.0;
     float Sum_waiting_times=0.0;
+    float float_TT = turnaround_times.size();
+    float float_WT = waiting_times.size();
     avg_turnaround = 0;
     avg_waiting = 0;
     /*
-     adding up the times
-     avg = times / number of times
 
-     total
-    number of times
 
+p1 = 5
+p1(BT) = 5
+p2 = 15
+P2(BT)=10
+P3(BT)=20
+p3 = 30
+
+5 + 15 + 30 = 50
+
+0 + 5
+5 + 10 = 15
+15 + 15 = 30
+
+previous burst time
+
+loop
+ C
+
+sum Turnround times = processes[i].Completion time
+waiting time =
+turnaround = burst time;
      */
+
+
     int j = 0; //j is the number of individual times we have
     cout<<"turnaround size: "<<turnaround_times.size()<<endl;
-    for (int i =0; i<turnaround_times.size(); i++){
-        cout<<"HELP!"<<endl;
-      Sum_turnaround_times = Sum_turnaround_times + turnaround_times[i];
-    }
+    for (int i =0; i<processes.size(); i++){
 
+      Sum_turnaround_times = Sum_turnaround_times + (current_time - processes[i].arrival_time);
+    }
+  cout<<"SumTurnaround time: "<<Sum_turnaround_times<<endl;
     for (int i =0; i<waiting_times.size(); i++){
-          cout<<"HELP!"<<endl;
-      Sum_waiting_times = Sum_waiting_times + waiting_times[i];
-    }
 
-  avg_turnaround = Sum_turnaround_times/turnaround_times.size();
-  avg_waiting = Sum_waiting_times/waiting_times.size();
+      Sum_waiting_times = Sum_waiting_times + (current_time - processes[i].burst_time);
+
+    }
+  cout<<"SumWaiting time: "<<Sum_waiting_times<<endl;
+  avg_turnaround = Sum_turnaround_times/float_TT;
+  avg_waiting = Sum_waiting_times/float_WT;
 
 }
 
