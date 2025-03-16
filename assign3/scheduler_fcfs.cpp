@@ -67,6 +67,7 @@ void SchedulerFCFS::simulate()
 {
 
     float Sum_turnaround_times=0.0;
+    float Sum_waiting_times=0.0;
     avg_turnaround = 0;
     avg_waiting = 0;
     /*
@@ -76,21 +77,20 @@ void SchedulerFCFS::simulate()
      total
     number of times
 
-
-
      */
     int j = 0; //j is the number of individual times we have
     cout<<"turnaround size: "<<turnaround_times.size()<<endl;
-    for (int i =0; i<turnaround_times.size()/2; i++){
+    for (int i =0; i<turnaround_times.size(); i++){
         cout<<"HELP!"<<endl;
-
-        for (j=turnaround_times.size(); j >turnaround_times.size()/2;j--) {
-            Sum_turnaround_times = turnaround_times[i] + turnaround_times[j];
-            cout<<"turnaround times at i:"<<i<<" at j: "<<j<<endl;
-            avg_turnaround = Sum_turnaround_times/turnaround_times.size();
-        }
+      Sum_turnaround_times = Sum_turnaround_times + turnaround_times[i];
     }
 
+    for (int i =0; i<waiting_times.size(); i++){
+          cout<<"HELP!"<<endl;
+      Sum_waiting_times = Sum_waiting_times + waiting_times[i];
+    }
+
+  avg_turnaround = Sum_turnaround_times/turnaround_times.size();
 
 }
 
