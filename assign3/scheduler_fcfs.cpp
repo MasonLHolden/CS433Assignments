@@ -91,6 +91,7 @@ void SchedulerFCFS::simulate()
     }
 
   avg_turnaround = Sum_turnaround_times/turnaround_times.size();
+  avg_waiting = Sum_waiting_times/waiting_times.size();
 
 }
 
