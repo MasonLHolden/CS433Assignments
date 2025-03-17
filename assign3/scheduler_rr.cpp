@@ -13,3 +13,22 @@
 
 // TODO: add implementation of SchedulerRR constructor, destrcutor and 
 // member functions init, print_results, and simulate here
+void init(std::vector<PCB>& process_list){
+
+  processes=process_list;
+
+
+  }
+
+
+void print_results(){
+
+  }
+
+/**
+ * @brief This function simulates the scheduling of processes in the ready queue.
+ *        It stops when all processes are finished.
+ */
+void simulate() {
+
+  }
