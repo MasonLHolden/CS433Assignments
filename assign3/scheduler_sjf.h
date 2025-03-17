@@ -15,7 +15,12 @@
 
 class SchedulerSJF : public Scheduler {
 private:
-    // TODO: add necessary member variables here for your implementation
+    float current_time;
+    vector<float>turnaround_times;
+    vector<float>waiting_times;
+    vector<PCB> processes;
+    float avg_turnaround;
+    float avg_waiting;
 
 public:
     /**
@@ -45,3 +50,4 @@ public:
     void simulate() override;
 };
 #endif //ASSIGN3_SCHEDULER_SJF_H
+
