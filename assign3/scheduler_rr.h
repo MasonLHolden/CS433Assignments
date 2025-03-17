@@ -16,7 +16,13 @@
 class SchedulerRR : public Scheduler {
 private:
     // TODO: add necessary member variables here for your implementation
-
+    float current_time;
+    vector<float>turnaround_times;
+    vector<float>waiting_times;
+    vector<PCB> processes;
+    float avg_turnaround;
+    float avg_waiting;
+    int quantum;
 public:
     /**
      * @brief Construct a new SchedulerRR object
