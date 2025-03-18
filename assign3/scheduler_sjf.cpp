@@ -10,17 +10,28 @@
 
 #include "scheduler_sjf.h"
 
-// TODO: add implementation of SchedulerSJF constructor, destrcutor and 
-// member functions init, print_results, and simulate here
-void init(std::vector<PCB>& process_list){
 
+// member functions init, print_results, and simulate here
+
+SchedulerSJF::SchedulerSJF() : current_time(0), avg_turnaround(0),avg_waiting(0)
+{}
+
+//Destructor
+SchedulerSJF::~SchedulerSJF()
+{}
+void SchedulerSJF:: init(std::vector<PCB>& process_list){
+//copying over to member variable
     processes=process_list;
+
+//resizing times arrays
+    turnaround_times.resize(processes.size()); 
+    waiting_times.resize(processes.size());
 
 
 }
 
 
-void print_results(){
+void SchedulerSJF:: print_results(){
 
 }
 
@@ -28,5 +39,10 @@ void print_results(){
  * @brief This function simulates the scheduling of processes in the ready queue.
  *        It stops when all processes are finished.
  */
-void simulate() {
+void SchedulerSJF:: simulate() {
+int end = processes.size();
+    sort(processes[0].burst_time, processes[end].burst_time); //sorting by burst time 
+
+  }
+
   }
