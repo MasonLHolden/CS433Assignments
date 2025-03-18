@@ -1,3 +1,4 @@
+
 /**
 * Assignment 3: CPU Scheduler
  * @file scheduler_fcfs.cpp
@@ -17,7 +18,7 @@ using namespace std;
 // member functions init, print_results, and simulate here
 
 //initialization
-SchedulerFCFS::SchedulerFCFS() : current_time(0)
+SchedulerFCFS::SchedulerFCFS() : current_time(0), avg_turnaround(0),avg_waiting(0)
 {}
 
 //Destructor
@@ -28,10 +29,10 @@ SchedulerFCFS::~SchedulerFCFS()
 void SchedulerFCFS::init(vector<PCB>& process_list)
 {
   //copy of list
-  vector<PCB> processes = process_list;
+  processes = process_list;
 
   //reset sim time
-   float current_time = 0;
+   current_time = 0;
 
   //allocate space
 
@@ -49,11 +50,11 @@ void SchedulerFCFS::print_results()
 
   for(int i =0; i< processes.size(); i++)
     {
-      cout<< "in da loop"<<endl;
+      //cout<< "in da loop"<<endl;
         cout<<"Process: "<<processes[i].id<<" "<<"Turnaround Time: "<<turnaround_times[i]<<" "<<"Wait time: "<<waiting_times[i]<<endl<<endl; //seg fault happens here
 
     }
-    cout<<"HERE"<<endl;
+    //cout<<"HERE"<<endl;
    //avg_turnaround = accumulate(turnaround_times.begin(), turnaround_times.end(),0.0)/turnaround_times.size();
    //avg_waiting = accumulate(waiting_times.begin(), waiting_times.end(),0.0)/waiting_times.size();
 
@@ -66,56 +67,49 @@ void SchedulerFCFS::print_results()
 void SchedulerFCFS::simulate()
 {
 
+  
     float Sum_turnaround_times=0.0;
     float Sum_waiting_times=0.0;
-    float float_TT = turnaround_times.size();
-    float float_WT = waiting_times.size();
-    avg_turnaround = 0;
-    avg_waiting = 0;
-    /*
+  
 
-
-p1 = 5
-p1(BT) = 5
-p2 = 15
-P2(BT)=10
-P3(BT)=20
-p3 = 30
-
-5 + 15 + 30 = 50
-
-0 + 5
-5 + 10 = 15
-15 + 15 = 30
-
-previous burst time
-
-loop
- C
-
-sum Turnround times = processes[i].Completion time
-waiting time =
-turnaround = burst time;
-     */
-
-
-    int j = 0; //j is the number of individual times we have
-    cout<<"turnaround size: "<<turnaround_times.size()<<endl;
-    for (int i =0; i<processes.size(); i++){
-
-      Sum_turnaround_times = Sum_turnaround_times + (current_time - processes[i].arrival_time);
+    if(!processes.empty())
+    {
+      current_time = processes[0].arrival_time;
     }
-  cout<<"SumTurnaround time: "<<Sum_turnaround_times<<endl;
-    for (int i =0; i<waiting_times.size(); i++){
 
-      Sum_waiting_times = Sum_waiting_times + (current_time - processes[i].burst_time);
+    for(size_t i = 0;i < processes.size(); i++)
+    {
+      if(current_time < processes[i].arrival_time)
+      {
+        current_time = processes[i].arrival_time;
+      }
+      // calculate WT
+      waiting_times[i] = current_time - processes[i].arrival_time;
+      //calculate CT
+      current_time += processes[i].burst_time;
+      //calculate TT
+      turnaround_times[i] = current_time - processes[i].arrival_time;
 
     }
-  cout<<"SumWaiting time: "<<Sum_waiting_times<<endl;
-  avg_turnaround = Sum_turnaround_times/float_TT;
-  avg_waiting = Sum_waiting_times/float_WT;
+
+
+    if(!turnaround_times.empty())
+    {
+      for (int i =0; i<processes.size(); i++){
+        Sum_turnaround_times = Sum_turnaround_times + turnaround_times[i];
+      }
+      avg_turnaround=Sum_turnaround_times/turnaround_times.size();
+    }
+
+
+
+    if(!waiting_times.empty())
+    {
+      for (int i =0; i<processes.size(); i++){
+        Sum_waiting_times = Sum_waiting_times + waiting_times[i];
+      }
+      avg_waiting = Sum_waiting_times/waiting_times.size();
+    }
+    
 
 }
-
-
-
