@@ -10,6 +10,8 @@
 
 
 #include "scheduler_priority.h"
+#include <algorithm>
+using namespace std;
 
 // TODO: add implementation of SchedulerPriority constructor, destrcutor and
 // member functions init, print_results, and simulate here
