@@ -11,13 +11,16 @@
 
 #include "scheduler_priority.h"
 #include <algorithm>
+#include <iostream>
+#include <numeric>
 using namespace std;
 
 // TODO: add implementation of SchedulerPriority constructor, destrcutor and
 // member functions init, print_results, and simulate here
 
 
-SchedulerPriority:: SchedulerPriority() {
+SchedulerPriority:: SchedulerPriority(): current_time(0), avg_turnaround(0),avg_waiting(0)
+{
 
 }
 
@@ -25,13 +28,30 @@ SchedulerPriority::~SchedulerPriority() {
 
 }
 void SchedulerPriority:: init(std::vector<PCB>& process_list) {
+  processes = process_list;
 
+  turnaround_times.resize(processes.size(),0);
+  waiting_times.resize(processes.size(),0);
+
+  sort(processes.begin(), processes.end(), [](const PCB& a), const PCB& b {return a.priority < b.priority;});
+  
 }
 
 void SchedulerPriority:: print_results() {
+  
 
 }
 
 void SchedulerPriority:: simulate() {
+  for(size_t i = 0; i < processes.size();i++)
+    {
+      waiting_times[i] = current_time;
+
+      current_time += current_process.burst_time;
+
+      turnaround_times[i] = current_time;
+
+    }
+  
 
 }
