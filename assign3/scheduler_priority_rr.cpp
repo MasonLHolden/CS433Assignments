@@ -1,59 +1,36 @@
-/**
 * Assignment 3: CPU Scheduler
- * @file scheduler_priority.h
+ * @file scheduler_priority_rr.cpp
  * @author Mason Lavender Holden, Judah Fisher
- * @brief This Scheduler class implements the Priority scheduling algorithm.
+ * @brief This Scheduler class implements the Priority RR scheduling algorithm.
  * @version 0.1
  */
 //You must complete the all parts marked as "TODO". Delete "TODO" after you are done.
 // Remember to add sufficient and clear comments to your code
 
+#include "scheduler_priority_rr.h"
 
-#ifndef ASSIGN3_SCHEDULER_PRIORITY_H
-#define ASSIGN3_SCHEDULER_PRIORITY_H
+// TODO: add implementation of SchedulerPriorityRR constructor, destrcutor and
+// member functions init, print_results, and simulate here
+SchedulerPriorityRR::SchedulerPriorityRR(int time_quantum) {
 
-#include "scheduler.h"
+}
 
-class SchedulerPriority : public Scheduler {
-private:
-    // TODO: add necessary member variables here for your implementation
-  float current time;
-    vector<float>turnaround_times;
-    vector<float>waiting_times;
-    vector<PCB> processes;
-    float avg_turnaround;
-    float avg_waiting;
-public:
-    /**
-     * @brief Construct a new SchedulerPriority object
-     */
-    SchedulerPriority();
+void SchedulerPriorityRR:: init(std::vector<PCB>& process_list){
 
-    /**
-     * @brief Destroy the SchedulerPriority object
-     */
-    ~SchedulerPriority() override;
-
-    /**
-     * @brief This function is called once before the simulation starts.
-     *        It is used to initialize the scheduler.
-     * @param process_list The list of processes in the simulation.
-     */
-    void init(std::vector<PCB>& process_list) override;
-
-    /**
-     * @brief This function is called once after the simulation ends.
-     *        It is used to print out the results of the simulation.
-     */
-    void print_results() override;
-
-    /**
-     * @brief This function simulates the scheduling of processes in the ready queue.
-     *        It stops when all processes are finished.
-     */
-    void simulate() override;
-
-};
+    processes=process_list;
 
 
-#endif //ASSIGN3_SCHEDULER_PRIORITY_H
+}
+
+
+void SchedulerPriorityRR::print_results(){
+
+}
+
+/**
+ * @brief This function simulates the scheduling of processes in the ready queue.
+ *        It stops when all processes are finished.
+ */
+void SchedulerPriorityRR::simulate() {
+}
+
