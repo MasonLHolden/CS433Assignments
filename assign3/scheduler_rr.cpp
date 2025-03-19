@@ -11,17 +11,24 @@
 
 #include "scheduler_rr.h"
 
-// TODO: add implementation of SchedulerRR constructor, destrcutor and 
+// TODO: add implementation of SchedulerRR constructor, destrcutor and
 // member functions init, print_results, and simulate here
-void init(std::vector<PCB>& process_list){
+SchedulerRR:: SchedulerRR(int time_quantum) {
 
-  processes=process_list;
+}
+SchedulerRR::~SchedulerRR() {
+
+}
+
+void SchedulerRR:: init(std::vector<PCB>& process_list){
+
+//  processes=process_list;
 
 
   }
 
 
-void print_results(){
+void SchedulerRR:: print_results(){
 
   }
 
@@ -29,6 +36,6 @@ void print_results(){
  * @brief This function simulates the scheduling of processes in the ready queue.
  *        It stops when all processes are finished.
  */
-void simulate() {
+void SchedulerRR:: simulate() {
 
   }
