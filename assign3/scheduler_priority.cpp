@@ -52,6 +52,24 @@ void SchedulerPriority:: simulate() {
       turnaround_times[i] = current_time;
 
     }
-  
 
+   if(!turnaround_times.empty())
+    {
+      for (int i =0; i<processes.size(); i++){
+        Sum_turnaround_times = Sum_turnaround_times + turnaround_times[i];
+      }
+      avg_turnaround=Sum_turnaround_times/turnaround_times.size();
+    }
+
+
+
+    if(!waiting_times.empty())
+    {
+      for (int i =0; i<processes.size(); i++){
+        Sum_waiting_times = Sum_waiting_times + waiting_times[i];
+      }
+      avg_waiting = Sum_waiting_times/waiting_times.size();
+    }
+
+  
 }
