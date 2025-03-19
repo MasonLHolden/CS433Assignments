@@ -49,8 +49,52 @@ void SchedulerSJF:: print_results(){
  */
 void SchedulerSJF:: simulate() {
 int end = processes.size();
-    sort(processes[0].burst_time, processes[end].burst_time); //sorting by burst time 
+    sort(processes[0].burst_time, processes[end].burst_time); //sorting by burst time
 
-  }
 
+
+
+
+    float Sum_turnaround_times=0.0;
+    float Sum_waiting_times=0.0;
+
+
+    if(!processes.empty())
+    {
+        current_time = processes[0].arrival_time;
+    }
+
+    for(size_t i = 0;i < processes.size(); i++)
+    {
+        if(current_time < processes[i].arrival_time)
+        {
+            current_time = processes[i].arrival_time;
+        }
+        // calculate WT
+        waiting_times[i] = current_time - processes[i].arrival_time;
+        //calculate CT
+        current_time += processes[i].burst_time;
+        //calculate TT
+        turnaround_times[i] = current_time - processes[i].arrival_time;
+
+    }
+
+
+    if(!turnaround_times.empty())
+    {
+        for (int i =0; i<processes.size(); i++){
+            Sum_turnaround_times = Sum_turnaround_times + turnaround_times[i];
+        }
+        avg_turnaround=Sum_turnaround_times/turnaround_times.size();
+    }
+
+
+
+    if(!waiting_times.empty())
+    {
+        for (int i =0; i<processes.size(); i++){
+            Sum_waiting_times = Sum_waiting_times + waiting_times[i];
+        }
+        avg_waiting = Sum_waiting_times/waiting_times.size();
+    }
   }
