@@ -9,7 +9,7 @@
 // Remember to add sufficient and clear comments to your code
 
 #include "scheduler_sjf.h"
-
+#include <algorithm>
 
 // member functions init, print_results, and simulate here
 
