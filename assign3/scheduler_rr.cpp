@@ -133,6 +133,4 @@ while(!ready_queue.empty())
  * @brief This function simulates the scheduling of processes in the ready queue.
  *        It stops when all processes are finished.
  */
-void SchedulerRR:: simulate() {
 
-  }
