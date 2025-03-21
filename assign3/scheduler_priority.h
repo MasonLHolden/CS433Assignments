@@ -17,7 +17,7 @@
 class SchedulerPriority : public Scheduler {
 private:
     // TODO: add necessary member variables here for your implementation
-  float current time;
+  float current_time;
     vector<float>turnaround_times;
     vector<float>waiting_times;
     vector<PCB> processes;
