@@ -19,7 +19,9 @@ using namespace std;
 // member functions init, print_results, and simulate here
 SchedulerRR:: SchedulerRR(int time_quantum) {
     quantum = time_quantum;
-
+    this->current_time = 0;
+    this->avg_turnaround = 0;
+    this->avg_waiting = 0;
 
 }
 SchedulerRR::~SchedulerRR() {
