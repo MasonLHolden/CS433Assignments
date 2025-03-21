@@ -26,7 +26,7 @@ void SchedulerSJF:: init(std::vector<PCB>& process_list){
 //resizing times arrays
     turnaround_times.resize(processes.size()); 
     waiting_times.resize(processes.size());
-
+    sort(processes.begin(), processes.end(),[](const PCB& a, const PCB& b){return a.burst_time < b.burst_time;});
 
 }
 
@@ -49,7 +49,7 @@ void SchedulerSJF:: print_results(){
  */
 void SchedulerSJF:: simulate() {
 int end = processes.size();
-    sort(processes[0].burst_time, processes[end].burst_time); //sorting by burst time
+
 
 
 
