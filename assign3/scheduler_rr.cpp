@@ -46,6 +46,20 @@ void SchedulerRR:: init(std::vector<PCB>& process_list){
 
 
 void SchedulerRR:: print_results(){
+
+    cout<<"RR Results"<<endl<<endl<<"------------------"<<endl<<endl;
+
+    for(int i =0; i< processes.size(); i++)
+    {
+        cout<<"Process: "<<processes[i].id<<" "<<"Turnaround Time: "<<turnaround_times[i]<<" "<<"Wait time: "<<waiting_times[i]<<endl<<endl; //seg fault happens here
+
+    }
+
+
+    cout<<"Avg Turnaround Time: "<<avg_turnaround<<endl;
+    cout<<"Avg Wait Time: "<<avg_waiting<<endl;
+
+
    
   }
 
