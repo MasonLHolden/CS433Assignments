@@ -30,28 +30,44 @@ SchedulerPriority::~SchedulerPriority() {
 void SchedulerPriority:: init(std::vector<PCB>& process_list) {
   processes = process_list;
 
+
   turnaround_times.resize(processes.size(),0);
   waiting_times.resize(processes.size(),0);
 
-  sort(processes.begin(), processes.end(), [](const PCB& a), const PCB& b {return a.priority < b.priority;});
-  
+
+  sort(processes.begin(), processes.end(),[](const PCB& a, const PCB& b){return a.priority > b.priority;});
+  //sort(processes.begin(), processes.end(), (const PCB& a), (const PCB& b), {return a.priority < b.priority;});
 }
 
 void SchedulerPriority:: print_results() {
-  
+  cout<<"Priority Results"<<endl<<endl<<"------------------"<<endl<<endl;
+
+  for(int i =0; i< processes.size(); i++)
+  {
+    cout<<"Process: "<<processes[i].id<<" "<<"Turnaround Time: "<<turnaround_times[i]<<" "<<"Wait time: "<<waiting_times[i]<<endl<<endl; //seg fault happens here
+
+  }
+
+
+  cout<<"Avg Turnaround Time: "<<avg_turnaround<<endl;
+  cout<<"Avg Wait Time: "<<avg_waiting<<endl;
+
 
 }
 
 void SchedulerPriority:: simulate() {
+  float Sum_turnaround_times = 0;
+  float Sum_waiting_times = 0;
   for(size_t i = 0; i < processes.size();i++)
-    {
-      waiting_times[i] = current_time;
+  {
 
-      current_time += current_process.burst_time;
+    waiting_times[i] = current_time;
 
-      turnaround_times[i] = current_time;
+    current_time += processes[i].burst_time;
 
-    }
+    turnaround_times[i] = current_time;
+
+}
 
    if(!turnaround_times.empty())
     {
