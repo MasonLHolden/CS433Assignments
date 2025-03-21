@@ -1,5 +1,4 @@
-
-/**
+/*
 * Assignment 3: CPU Scheduler
  * @file scheduler_fcfs.cpp
  * @author Mason Lavender Holden, Judah Fisher
@@ -110,6 +109,4 @@ void SchedulerFCFS::simulate()
       }
       avg_waiting = Sum_waiting_times/waiting_times.size();
     }
-    
-
 }
