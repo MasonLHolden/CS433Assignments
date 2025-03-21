@@ -50,4 +50,3 @@ public:
     void simulate() override;
 };
 #endif //ASSIGN3_SCHEDULER_SJF_H
-
