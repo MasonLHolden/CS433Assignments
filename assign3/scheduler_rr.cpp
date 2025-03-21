@@ -19,7 +19,7 @@ using namespace std;
 // member functions init, print_results, and simulate here
 SchedulerRR:: SchedulerRR(int time_quantum) {
     quantum = time_quantum;
-    
+
 
 }
 SchedulerRR::~SchedulerRR() {
@@ -35,6 +35,8 @@ void SchedulerRR:: init(std::vector<PCB>& process_list){
     avg_waiting = 0;
     //reset sim time
     current_time = 0;
+
+
 
     //allocate space
     turnaround_times.resize(processes.size());
@@ -75,7 +77,8 @@ void SchedulerRR:: simulate() {
     vector<int> remaining_burst(processes.size());
     vector<float> completion_time(processes.size(),0);
 
-    for(size_t i = 0; i < prrocesses.size(); i++)
+
+    for(size_t i = 0; i < processes.size(); i++)
         {
             remaining_burst[i] = processes[i].burst_time;
         }
@@ -87,7 +90,8 @@ void SchedulerRR:: simulate() {
 while(!ready_queue.empty())
     {
         int current_process = ready_queue.front();
-        int executuion_time = min(quantum, remaining_burst[current_process]);
+    int execution_time = min(quantum, remaining_burst[current_process]);
+
 
         ready_queue.pop();
 
@@ -117,34 +121,9 @@ while(!ready_queue.empty())
     avg_turnaround = total_turnaround/processes.size();
     avg_waiting = total_waiting/processes.size();
 
-    
-    
-    
-    
-    /*
-
-    for i < processes size //outer loop
-    {
-    while(processes[i] burst Time != 0)
-     if(burst_time < quantum)
-     {
-        current_time = current_time + burst_time
-        burst_time = 0;
-     }
-
-    else if(burst_time >= quantum)
-        {
-            burst_time=burst_time - quantum
-            current_time = current_time + burst_time
-        }
-
-        }
-     */
-
   }
 
 /**
  * @brief This function simulates the scheduling of processes in the ready queue.
  *        It stops when all processes are finished.
  */
-
