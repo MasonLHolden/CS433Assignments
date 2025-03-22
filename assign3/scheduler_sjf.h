@@ -15,11 +15,11 @@
 
 class SchedulerSJF : public Scheduler {
 private:
-    float current_time;
-    vector<float>turnaround_times;
-    vector<float>waiting_times;
-    vector<PCB> processes;
-    float avg_turnaround;
+    float current_time; // current time in the execution
+    vector<float>turnaround_times; // all the TTS
+    vector<float>waiting_times; //all the WTS
+    vector<PCB> processes; //contains all the processes
+    float avg_turnaround; 
     float avg_waiting;
 
 public:
