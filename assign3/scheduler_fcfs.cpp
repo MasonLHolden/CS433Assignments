@@ -53,9 +53,7 @@ void SchedulerFCFS::print_results()
         cout<<"Process: "<<processes[i].id<<" "<<"Turnaround Time: "<<turnaround_times[i]<<" "<<"Wait time: "<<waiting_times[i]<<endl<<endl; //seg fault happens here
 
     }
-    //cout<<"HERE"<<endl;
-   //avg_turnaround = accumulate(turnaround_times.begin(), turnaround_times.end(),0.0)/turnaround_times.size();
-   //avg_waiting = accumulate(waiting_times.begin(), waiting_times.end(),0.0)/waiting_times.size();
+    
 
   cout<<"Avg Turnaround Time: "<<avg_turnaround<<endl;
   cout<<"Avg Wait Time: "<<avg_waiting<<endl;
@@ -66,16 +64,17 @@ void SchedulerFCFS::print_results()
 void SchedulerFCFS::simulate()
 {
 
-  
+  //init totals for TT and WT
     float Sum_turnaround_times=0.0;
     float Sum_waiting_times=0.0;
   
-
+  //if processes are not empty, update CT with BT 
     if(!processes.empty())
     {
       current_time = processes[0].arrival_time;
     }
 
+  //increment through processes updating variables
     for(size_t i = 0;i < processes.size(); i++)
     {
       if(current_time < processes[i].arrival_time)
@@ -91,7 +90,7 @@ void SchedulerFCFS::simulate()
 
     }
 
-
+   //if TT vector is not empty, calculate AVG
     if(!turnaround_times.empty())
     {
       for (int i =0; i<processes.size(); i++){
@@ -101,7 +100,7 @@ void SchedulerFCFS::simulate()
     }
 
 
-
+   //if WT vector is not empty, calculate AVG
     if(!waiting_times.empty())
     {
       for (int i =0; i<processes.size(); i++){
