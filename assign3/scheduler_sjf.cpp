@@ -12,11 +12,11 @@
 #include <algorithm>
 
 // member functions init, print_results, and simulate here
-
+//constructor initilizes CT, AVG tt and WT
 SchedulerSJF::SchedulerSJF() : current_time(0), avg_turnaround(0),avg_waiting(0)
 {}
 
-//Destructor
+//Destructor, nothing happens
 SchedulerSJF::~SchedulerSJF()
 {}
 void SchedulerSJF:: init(std::vector<PCB>& process_list){
@@ -33,9 +33,9 @@ void SchedulerSJF:: init(std::vector<PCB>& process_list){
 
 void SchedulerSJF:: print_results(){
  cout<<"SJF Results"<<endl<<endl<<"------------------"<<endl<<endl;
-    for(int i =0; i< processes.size(); i++)
+    for(int i =0; i< processes.size(); i++) //looping for the whole array
     {
-
+    //outputting    
         cout<<"Process: "<<processes[i].id<<" "<<"Turnaround Time: "<<turnaround_times[i]<<" "<<"Wait time: "<<waiting_times[i]<<endl<<endl; //seg fault happens here
 
     }
@@ -48,27 +48,27 @@ void SchedulerSJF:: print_results(){
  *        It stops when all processes are finished.
  */
 void SchedulerSJF:: simulate() {
-int end = processes.size();
+int end = processes.size(); //end of the array for sort
 
 
 
 
 
-
+    //initializing sum variables
     float Sum_turnaround_times=0.0;
     float Sum_waiting_times=0.0;
 
-
+//if the processes array is empty set the current time to the first proceseses AT
     if(!processes.empty())
     {
         current_time = processes[0].arrival_time;
     }
-
+//looping for whole size
     for(size_t i = 0;i < processes.size(); i++)
     {
-        if(current_time < processes[i].arrival_time)
+        if(current_time < processes[i].arrival_time) //if the current time is less than current part of the arrays AT
         {
-            current_time = processes[i].arrival_time;
+            current_time = processes[i].arrival_time; //Current time is equal to AT at process i
         }
         // calculate WT
         waiting_times[i] = current_time - processes[i].arrival_time;
@@ -79,7 +79,7 @@ int end = processes.size();
 
     }
 
-
+//checking if TT array is empty
     if(!turnaround_times.empty())
     {
         for (int i =0; i<processes.size(); i++){
@@ -89,7 +89,7 @@ int end = processes.size();
     }
 
 
-
+// if waiting times is empty
     if(!waiting_times.empty())
     {
         for (int i =0; i<processes.size(); i++){
