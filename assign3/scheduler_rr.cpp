@@ -24,7 +24,7 @@ SchedulerRR:: SchedulerRR(int time_quantum) {
     this->avg_waiting = 0;
 
 }
-SchedulerRR::~SchedulerRR() {
+SchedulerRR::~SchedulerRR() { //nothing happens in destructor
 
 }
 
@@ -32,7 +32,7 @@ void SchedulerRR:: init(std::vector<PCB>& process_list){
 
     //copy of list
     processes = process_list;
-
+//initializing values
     avg_turnaround = 0;
     avg_waiting = 0;
     //reset sim time
@@ -53,13 +53,13 @@ void SchedulerRR:: print_results(){
 
     cout<<"RR Results"<<endl<<endl<<"------------------"<<endl<<endl;
 
-    for(int i =0; i< processes.size(); i++)
+    for(int i =0; i< processes.size(); i++) //looping for whole size
     {
         cout<<"Process: "<<processes[i].id<<" "<<"Turnaround Time: "<<turnaround_times[i]<<" "<<"Wait time: "<<waiting_times[i]<<endl<<endl; //seg fault happens here
 
     }
 
-
+//outputting
     cout<<"Avg Turnaround Time: "<<avg_turnaround<<endl;
     cout<<"Avg Wait Time: "<<avg_waiting<<endl;
 
@@ -72,7 +72,7 @@ void SchedulerRR:: print_results(){
  *        It stops when all processes are finished.
  */
 void SchedulerRR:: simulate() {
-   
+   //initializing 
     float total_turnaround = 0;
     float total_waiting = 0;
     queue<int> ready_queue;
@@ -80,28 +80,28 @@ void SchedulerRR:: simulate() {
     vector<float> completion_time(processes.size(),0);
 
 
-    for(size_t i = 0; i < processes.size(); i++)
+    for(size_t i = 0; i < processes.size(); i++) //loop for size
         {
-            remaining_burst[i] = processes[i].burst_time;
+            remaining_burst[i] = processes[i].burst_time; 
         }
 
-    for(size_t i = 0; i < processes.size(); i++)
+    for(size_t i = 0; i < processes.size(); i++) //loop for size
         {
-            ready_queue.push(i);
+            ready_queue.push(i); //push into vector
         }
-while(!ready_queue.empty())
+while(!ready_queue.empty()) //while empty loop
     {
-        int current_process = ready_queue.front();
-    int execution_time = min(quantum, remaining_burst[current_process]);
+        int current_process = ready_queue.front(); //current is equal to the front of the vector
+    int execution_time = min(quantum, remaining_burst[current_process]); //ET is equal to the min
 
 
-        ready_queue.pop();
+        ready_queue.pop(); //popping ready queue
 
-        current_time += execution_time;
+        current_time += execution_time; //current time is incremented 
 
-        remaining_burst[current_process] -= execution_time;
+        remaining_burst[current_process] -= execution_time; //remaining burst is decremented
 
-        if(remaining_burst[current_process] == 0)
+        if(remaining_burst[current_process] == 0) //if remains are 0, skip
         {
             completion_time[current_process] = current_time;
 
@@ -109,18 +109,20 @@ while(!ready_queue.empty())
 
             waiting_times[current_process] = turnaround_times[current_process] - processes[current_process].burst_time;
         }
-        else{
-            ready_queue.push(current_process);
+        else{ //if not 0 push for later
+            ready_queue.push(current_process); //pushing into queue
         }
     }
 
     
-    for(size_t i = 0;i<processes.size();i++)
+    for(size_t i = 0;i<processes.size();i++) //loop for size
         {
-            total_turnaround += turnaround_times[i];
+            //incrementing totals
+            total_turnaround += turnaround_times[i]; 
             total_waiting += waiting_times[i];
         }
-    avg_turnaround = total_turnaround/processes.size();
+    //calculations
+    avg_turnaround = total_turnaround/processes.size(); 
     avg_waiting = total_waiting/processes.size();
 
   }
