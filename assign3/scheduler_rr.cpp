@@ -15,7 +15,6 @@
 #include <iostream>
 using namespace std;
 
-// TODO: add implementation of SchedulerRR constructor, destrcutor and
 // member functions init, print_results, and simulate here
 SchedulerRR:: SchedulerRR(int time_quantum) {
     quantum = time_quantum;
@@ -44,8 +43,6 @@ void SchedulerRR:: init(std::vector<PCB>& process_list){
     turnaround_times.resize(processes.size());
     waiting_times.resize(processes.size());
 
-    //sort?
-    //sort(processes.begin(), processes.end(),[](const PCB& a, const PCB& b){return a.arrival_time < b.arrival_time;});
   }
 
 
