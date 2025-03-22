@@ -15,9 +15,6 @@
 #include <numeric>
 using namespace std;
 
-// TODO: add implementation of SchedulerPriority constructor, destrcutor and
-// member functions init, print_results, and simulate here
-
 
 SchedulerPriority:: SchedulerPriority(): current_time(0), avg_turnaround(0),avg_waiting(0)
 {
@@ -36,19 +33,19 @@ void SchedulerPriority:: init(std::vector<PCB>& process_list) {
 
 
   sort(processes.begin(), processes.end(),[](const PCB& a, const PCB& b){return a.priority > b.priority;});
-  //sort(processes.begin(), processes.end(), (const PCB& a), (const PCB& b), {return a.priority < b.priority;});
 }
 
 void SchedulerPriority:: print_results() {
   cout<<"Priority Results"<<endl<<endl<<"------------------"<<endl<<endl;
 
+  //print proceses
   for(int i =0; i< processes.size(); i++)
   {
-    cout<<"Process: "<<processes[i].id<<" "<<"Turnaround Time: "<<turnaround_times[i]<<" "<<"Wait time: "<<waiting_times[i]<<endl<<endl; //seg fault happens here
+    cout<<"Process: "<<processes[i].id<<" "<<"Turnaround Time: "<<turnaround_times[i]<<" "<<"Wait time: "<<waiting_times[i]<<endl<<endl; 
 
   }
 
-
+  //print AVGs
   cout<<"Avg Turnaround Time: "<<avg_turnaround<<endl;
   cout<<"Avg Wait Time: "<<avg_waiting<<endl;
 
@@ -56,19 +53,24 @@ void SchedulerPriority:: print_results() {
 }
 
 void SchedulerPriority:: simulate() {
+
+  //init TT and WT sums
   float Sum_turnaround_times = 0;
   float Sum_waiting_times = 0;
+
+  //increment through processes vector and update times
   for(size_t i = 0; i < processes.size();i++)
   {
-
+    //update WT at i to be CT
     waiting_times[i] = current_time;
-
+    //increment CT with burst time at process i
     current_time += processes[i].burst_time;
-
+    //set TT at i to CT
     turnaround_times[i] = current_time;
 
 }
 
+  //if TT vector is not empty calculate AVG
    if(!turnaround_times.empty())
     {
       for (int i =0; i<processes.size(); i++){
@@ -78,7 +80,7 @@ void SchedulerPriority:: simulate() {
     }
 
 
-
+    //if WT vector is not empty calculate AVG
     if(!waiting_times.empty())
     {
       for (int i =0; i<processes.size(); i++){
