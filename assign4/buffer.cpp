@@ -9,5 +9,6 @@
 // You must complete the all parts marked as "TODO". Delete "TODO" after you are done.
 // Remember to add sufficient and clear comments to your code
 #include "buffer.h"
+#include <pthread.h>
 
 // TODO: Add your implementation of the buffer class here
