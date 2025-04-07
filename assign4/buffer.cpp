@@ -13,38 +13,38 @@
 
 // TODO: Add your implementation of the buffer class here
 
-bool insert_item(buffer_item item)
+Buffer::insert_item(buffer_item item)
 {
 
 }
 
    
-bool remove_item(buffer_item *item)
+Buffer::remove_item(buffer_item *item)
 {
 
 }
 
-int get_size()
+Buffer::get_size()
+{
+    return Buffer.size();
+}
+
+Buffer::get_count()
+{
+    
+}
+
+Buffer::is_empty()
 {
 
 }
 
-int get_count()
+Buffer::is_full()
 {
 
 }
 
-bool is_empty()
-{
-
-}
-
-bool is_full()
-{
-
-}
-
-void print_buffer()
+Buffer::print_buffer()
 {
 
 }
