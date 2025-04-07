@@ -12,3 +12,39 @@
 #include <pthread.h>
 
 // TODO: Add your implementation of the buffer class here
+
+bool insert_item(buffer_item item)
+{
+
+}
+
+   
+bool remove_item(buffer_item *item)
+{
+
+}
+
+int get_size()
+{
+
+}
+
+int get_count()
+{
+
+}
+
+bool is_empty()
+{
+
+}
+
+bool is_full()
+{
+
+}
+
+void print_buffer()
+{
+
+}
