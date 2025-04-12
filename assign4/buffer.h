@@ -8,6 +8,7 @@
 
 #ifndef ASSIGN4_BUFFER_H
 #define ASSIGN4_BUFFER_H
+#include <vector>
 
 // Define the data type of the buffer items
 typedef int buffer_item;
@@ -18,6 +19,13 @@ typedef int buffer_item;
 class Buffer {
 private:
     // TODO: Add your implementation of the buffer class here
+
+
+    int buffer_size;
+    buffer_item* buffer_array;
+    int buffer_count;
+    int front;
+    int rear;
 
 public:
     /**
@@ -76,3 +84,4 @@ public:
     void print_buffer();
 };
 #endif //ASSIGN4_BUFFER_H
+
