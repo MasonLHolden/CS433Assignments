@@ -10,14 +10,18 @@
 // Remember to add sufficient and clear comments to your code
 #include "buffer.h"
 #include <iostream>
+#include <stdio.h>
+#include <pthread.h>
+#include <vector>
 
 // TODO: Add your implementation of the buffer class here
 
 Buffer::Buffer(int size)
 {
+
     buffer_size = size;
     buffer_count = 0;
-    buffer_array = new buffer_item[size];
+    buffer_array = new buffer_item[buffer_size];
     front = 0;
     rear = 0;
 
@@ -27,6 +31,8 @@ Buffer::Buffer(int size)
         pthread_cond(not full)
         pthread_cond(not empty)
     */
+
+
 }
 
 Buffer::~Buffer()
@@ -62,7 +68,7 @@ bool Buffer::is_empty()
     return (buffer_count == 0);
 }
 
-Buffer::is_full()
+bool Buffer::is_full()
 {
     return(buffer_count == buffer_size);
 }
