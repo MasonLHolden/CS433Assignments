@@ -9,41 +9,65 @@
 // You must complete the all parts marked as "TODO". Delete "TODO" after you are done.
 // Remember to add sufficient and clear comments to your code
 #include "buffer.h"
+#include <iostream>
 
 // TODO: Add your implementation of the buffer class here
 
-Buffer::insert_item(buffer_item item)
+Buffer::Buffer(int size)
+{
+    buffer_size = size;
+    buffer_count = 0;
+    buffer_array = new buffer_item[size];
+    front = 0;
+    rear = 0;
+
+    // Initialize mutex and condition variables
+    /*
+        pthread_mutex(mutex)
+        pthread_cond(not full)
+        pthread_cond(not empty)
+    */
+}
+
+Buffer::~Buffer()
+{
+    delete[] buffer_array;
+
+    //destroy mutex and cond pthreads
+}
+
+bool Buffer::insert_item(buffer_item item)
 {
 
 }
 
    
-Buffer::remove_item(buffer_item *item)
+bool Buffer::remove_item(buffer_item *item)
 {
 
 }
 
-Buffer::get_size()
+int Buffer::get_size()
 {
-    return Buffer.size();
+    return buffer_size;
 }
 
-Buffer::get_count()
+int Buffer::get_count()
 {
-    
+    return buffer_count;
 }
 
-Buffer::is_empty()
+bool Buffer::is_empty()
 {
-
+    return (buffer_count == 0);
 }
 
 Buffer::is_full()
 {
-
+    return(buffer_count == buffer_size);
 }
 
-Buffer::print_buffer()
+void Buffer::print_buffer()
 {
 
 }
