@@ -21,6 +21,7 @@ Buffer buffer;
 // TODO: Add your implementation of the producer thread here
 void *producer(void *param) {
     // Each producer insert its own ID into the buffer
+
     // For example, thread 1 will insert 1, thread 2 will insert 2, and so on.
     buffer_item item = *((int *) param);
 
@@ -28,6 +29,8 @@ void *producer(void *param) {
         /* sleep for a random period of time */
         usleep(rand()%1000000);
         // TODO: Add synchronization code here
+
+
         if (buffer.insert_item(item)) {
             cout << "Producer " << item << ": Inserted item " << item << endl;
             buffer.print_buffer();
@@ -56,8 +59,27 @@ void *consumer(void *param) {
 }
 
 int main(int argc, char *argv[]) {
-    /* TODO: 1. Get command line arguments argv[1],argv[2],argv[3] */
+
+
+
+
+    cout<<"Hello, World!"<<endl;
+    /* 1.Get command line arguments argv[1],argv[2],argv[3] */
+    if (argc == 5) {
+        int sleep_time = stoi(argv[1]);
+        int num_producers = stoi(argv[2]);
+        int num_consumers = stoi(argv[3]);
+
+        if (sleep_time < 0|| num_consumers < 0 || num_producers < 0) {
+            cout<<"Values must be positive"<<endl;
+            return 1;
+        }
+        cout<<"Number of sleep_time: "<<sleep_time<<endl;
+        cout<<"Number of producers: " << num_producers<<endl;
+        cout<<"Number of consumers: " << num_consumers<<endl;
+    }
     /* TODO: 2. Initialize buffer and synchronization primitives */
+
     /* TODO: 3. Create producer thread(s).
      * You should pass an unique int ID to each producer thread, starting from 1 to number of threads */
     /* TODO: 4. Create consumer thread(s) */
