@@ -28,6 +28,7 @@ void *producer(void *param) {
     while (true) {
         /* sleep for a random period of time */
         usleep(rand()%1000000);
+        item = rand(); //from project 4 7.10 to initialize the item
         // TODO: Add synchronization code here
 
 
@@ -59,7 +60,6 @@ void *consumer(void *param) {
 }
 
 int main(int argc, char *argv[]) {
-
 
 
 
