@@ -14,6 +14,8 @@
 #include <pthread.h>
 #include <vector>
 
+using namespace std;
+
 // TODO: Add your implementation of the buffer class here
 
 Buffer::Buffer(int size)
@@ -24,33 +26,64 @@ Buffer::Buffer(int size)
     buffer_array = new buffer_item[buffer_size];
     front = 0;
     rear = 0;
-
     // Initialize mutex and condition variables
-    /*
-        pthread_mutex(mutex)
-        pthread_cond(not full)
-        pthread_cond(not empty)
-    */
+        pthread_mutex_init(&mutex, nullptr);
+        pthread_cond_init(&full, nullptr);
+        pthread_cond_init(&empty, nullptr);
+
 
 
 }
 
 Buffer::~Buffer()
 {
-    delete[] buffer_array;
-
+   delete[] buffer_array;
     //destroy mutex and cond pthreads
+    pthread_mutex_destroy(&mutex);
+    pthread_cond_destroy(&full);
+    pthread_cond_destroy(&empty);
 }
 
 bool Buffer::insert_item(buffer_item item)
 {
+    pthread_mutex_lock(&mutex);
+    //wait when full
+    while (is_full) {  //loop a wait if the array is full
+        pthread_cond_wait(&full, &mutex);
+    }
 
+    buffer_array[rear] = item; //the ream is equal to the item we are inserting
+
+    rear = (rear + 1) % buffer_size; //the place of the rear shifts by one and then mod
+
+    buffer_count ++; //increment counter
+
+    pthread_cond_signal(&empty); //signal to wake up threads
+
+    pthread_mutex_unlock(&mutex); //unlock the mutex
+
+    return true;
 }
 
    
-bool Buffer::remove_item(buffer_item *item)
-{
+bool Buffer::remove_item(buffer_item *item) {
+    pthread_mutex_lock(&mutex);
+    //wait when full
+    while (is_empty) { //while the array is empty, loop
+        pthread_cond_wait(&empty, &mutex); //wait
+    }
 
+    buffer_array[front] = *item; //front of the aray is equal to a pointer at the item
+
+    front = (front + 1) % buffer_size;  //changing the front.
+
+    buffer_count --; //decrementing because we have removed an item
+
+    pthread_cond_signal(&full);
+
+    pthread_mutex_unlock(&mutex);
+
+    return true;
 }
 
 int Buffer::get_size()
@@ -75,5 +108,20 @@ bool Buffer::is_full()
 
 void Buffer::print_buffer()
 {
-
+    pthread_mutex_lock(&mutex);
+    cout<<"Buffer: [";
+    if (!is_empty()) {
+        int index = front;
+        for (int i = 0; i < buffer_count; i++) {
+            cout<<buffer_array[index];
+            if (i<buffer_count - 1) {
+                cout<<", ";
+            }
+            index = (index + 1) % buffer_size;
+        }
+    }
+    cout<<"]"<<endl;
+    pthread_mutex_unlock(&mutex);
 }
+
+
