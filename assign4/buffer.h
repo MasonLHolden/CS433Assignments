@@ -18,7 +18,6 @@ typedef int buffer_item;
  */
 class Buffer {
 private:
-    // TODO: Add your implementation of the buffer class here
     pthread_mutex_t mutex;
     pthread_cond_t full;
     pthread_cond_t empty;
@@ -86,3 +85,4 @@ public:
     void print_buffer();
 };
 #endif //ASSIGN4_BUFFER_H
+
