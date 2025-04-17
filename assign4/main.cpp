@@ -21,17 +21,14 @@ Buffer buffer;
 // TODO: Add your implementation of the producer thread here
 void *producer(void *param) {
     // Each producer insert its own ID into the buffer
-
     // For example, thread 1 will insert 1, thread 2 will insert 2, and so on.
     buffer_item item = *((int *) param);
 
     while (true) {
         /* sleep for a random period of time */
         usleep(rand()%1000000);
-        item = rand(); //from project 4 7.10 to initialize the item
+    //    item = rand(); //from project 4 7.10 to initialize the item
         // TODO: Add synchronization code here
-
-
         if (buffer.insert_item(item)) {
             cout << "Producer " << item << ": Inserted item " << item << endl;
             buffer.print_buffer();
@@ -61,9 +58,6 @@ void *consumer(void *param) {
 
 int main(int argc, char *argv[]) {
 
-
-
-    cout<<"Hello, World!"<<endl;
     /* 1.Get command line arguments argv[1],argv[2],argv[3] */
     if (argc == 5) {
         int sleep_time = stoi(argv[1]);
@@ -74,15 +68,52 @@ int main(int argc, char *argv[]) {
             cout<<"Values must be positive"<<endl;
             return 1;
         }
+        /*
         cout<<"Number of sleep_time: "<<sleep_time<<endl;
         cout<<"Number of producers: " << num_producers<<endl;
         cout<<"Number of consumers: " << num_consumers<<endl;
-    }
-    /* TODO: 2. Initialize buffer and synchronization primitives */
+        */
 
-    /* TODO: 3. Create producer thread(s).
-     * You should pass an unique int ID to each producer thread, starting from 1 to number of threads */
-    /* TODO: 4. Create consumer thread(s) */
-    /* TODO: 5. Main thread sleep */
+        /* TODO: 2. Initialize buffer and synchronization primitives */
+
+        Buffer(5);
+
+        /* TODO: 3. Create producer thread(s).
+         * You should pass an unique int ID to each producer thread, starting from 1 to number of threads */
+        vector<pthread_t> producer_threads(num_producers);
+        vector<buffer_item> producer_ids(num_producers);
+        //pthread_t proThread;
+        //void *thread_param=NULL;
+
+        //int test = pthread_create(&proThread, NULL, producer, thread_param);
+
+
+        for (int i = 0; i < num_producers; ++i) {
+            producer_ids[i] = i+1;
+            if (pthread_create(&producer_threads[i], NULL, producer, &producer_threads[i]) != 0) {
+                cout<<"Producer thread creation failed"<<endl;
+                return 1;
+            }
+        }
+        /* TODO: 4. Create consumer thread(s) */
+        vector<pthread_t> consumer_threads(num_consumers);
+        vector<buffer_item> consumer_ids(num_consumers);
+        for (int i = 0; i < num_consumers; ++i) {
+            consumer_ids[i] = i+1;
+            if (pthread_create(&producer_threads[i], NULL, producer, &consumer_threads[i]) != 0) {
+                cout<<"Consumer thread creation failed"<<endl;
+                return 1;
+            }
+        }
+
+        /* TODO: 5. Main thread sleep */
+        cout << "Main thread sleeping for "<<sleep_time<<" seconds" << endl;
+        sleep(sleep_time);
+
+
+    }
+
     /* TODO: 6. Exit */
+    return 0;
 }
+
