@@ -48,7 +48,7 @@ bool Buffer::insert_item(buffer_item item)
 {
     pthread_mutex_lock(&mutex);
     //wait when full
-    while (is_full) {  //loop a wait if the array is full
+    while (is_full()) {  //loop a wait if the array is full
         pthread_cond_wait(&full, &mutex);
     }
 
@@ -69,7 +69,7 @@ bool Buffer::insert_item(buffer_item item)
 bool Buffer::remove_item(buffer_item *item) {
     pthread_mutex_lock(&mutex);
     //wait when full
-    while (is_empty) { //while the array is empty, loop
+    while (is_empty()) { //while the array is empty, loop
         pthread_cond_wait(&empty, &mutex); //wait
     }
 
