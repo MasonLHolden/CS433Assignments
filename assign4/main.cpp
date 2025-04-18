@@ -23,6 +23,7 @@ void *producer(void *param) {
     // Each producer insert its own ID into the buffer
     // For example, thread 1 will insert 1, thread 2 will insert 2, and so on.
     buffer_item item = *((int *) param);
+    //cout<<"item is currently"<<item<<endl; //temp
 
     while (true) {
         /* sleep for a random period of time */
@@ -90,7 +91,7 @@ int main(int argc, char *argv[]) {
 
         for (int i = 0; i < num_producers; ++i) {
             producer_ids[i] = i+1;
-            if (pthread_create(&producer_threads[i], NULL, producer, &producer_threads[i]) != 0) {
+            if (pthread_create(&producer_threads[i], NULL, producer, &producer_ids[i]) != 0) {
                 cout<<"Producer thread creation failed"<<endl;
                 return 1;
             }
@@ -100,7 +101,7 @@ int main(int argc, char *argv[]) {
         vector<buffer_item> consumer_ids(num_consumers);
         for (int i = 0; i < num_consumers; ++i) {
             consumer_ids[i] = i+1;
-            if (pthread_create(&producer_threads[i], NULL, producer, &consumer_threads[i]) != 0) {
+            if (pthread_create(&consumer_threads[i], NULL, consumer, &consumer_ids[i]) != 0) {
                 cout<<"Consumer thread creation failed"<<endl;
                 return 1;
             }
@@ -116,4 +117,3 @@ int main(int argc, char *argv[]) {
     /* TODO: 6. Exit */
     return 0;
 }
-
