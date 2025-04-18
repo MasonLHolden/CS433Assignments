@@ -42,7 +42,7 @@ void *producer(void *param) {
 // Consumer thread function
 // TODO: Add your implementation of the consumer thread here
 void *consumer(void *param) {
-    buffer_item item;
+    buffer_item item = *((int *) param);//added
 
     while (true) {
         /* sleep for a random period of time */
@@ -92,7 +92,7 @@ int main(int argc, char *argv[]) {
 
         for (int i = 0; i < num_producers; ++i) {
             producer_ids[i] = i+1;
-            if (pthread_create(&producer_threads[i], NULL, producer, &producer_ids[i]) != 0) {
+            if (pthread_create(&producer_threads[i], nullptr, producer, &producer_ids[i]) != 0) {
                 cout<<"Producer thread creation failed"<<endl;
                 return 1;
             }
@@ -103,10 +103,9 @@ int main(int argc, char *argv[]) {
 
         for (int i = 0; i < num_consumers; ++i) {
             consumer_ids[i] = i+1;
+           // cout <<endl<<"<<Consumer ID>>"<<consumer_ids[i]<<endl;
 
-            //item_id = consumer_ids[i];
-
-            if (pthread_create(&consumer_threads[i], NULL, consumer, &consumer_ids[i+1]) != 0) {
+            if (pthread_create(&consumer_threads[i], nullptr, consumer, &consumer_ids[i]) != 0) {
                 cout<<"Consumer thread creation failed"<<endl;
                 return 1;
             }
