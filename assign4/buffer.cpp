@@ -73,7 +73,7 @@ bool Buffer::remove_item(buffer_item *item) {
         pthread_cond_wait(&empty, &mutex); //wait
     }
 
-    buffer_array[front] = *item; //front of the aray is equal to a pointer at the item
+    *item = buffer_array[front]; //front of the aray is equal to a pointer at the item
 
     front = (front + 1) % buffer_size;  //changing the front.
 
@@ -123,5 +123,4 @@ void Buffer::print_buffer()
     cout<<"]"<<endl;
     pthread_mutex_unlock(&mutex);
 }
-
 
