@@ -60,6 +60,7 @@ void *consumer(void *param) {
 int main(int argc, char *argv[]) {
 
     /* 1.Get command line arguments argv[1],argv[2],argv[3] */
+
     if (argc == 5) {
         int sleep_time = stoi(argv[1]);
         int num_producers = stoi(argv[2]);
@@ -99,9 +100,13 @@ int main(int argc, char *argv[]) {
         /* TODO: 4. Create consumer thread(s) */
         vector<pthread_t> consumer_threads(num_consumers);
         vector<buffer_item> consumer_ids(num_consumers);
+
         for (int i = 0; i < num_consumers; ++i) {
             consumer_ids[i] = i+1;
-            if (pthread_create(&consumer_threads[i], NULL, consumer, &consumer_ids[i]) != 0) {
+
+            //item_id = consumer_ids[i];
+
+            if (pthread_create(&consumer_threads[i], NULL, consumer, &consumer_ids[i+1]) != 0) {
                 cout<<"Consumer thread creation failed"<<endl;
                 return 1;
             }
