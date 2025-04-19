@@ -28,9 +28,6 @@ Buffer::Buffer(int size)
         pthread_mutex_init(&mutex, nullptr);
         pthread_cond_init(&full, nullptr);
         pthread_cond_init(&empty, nullptr);
-
-
-
 }
 
 Buffer::~Buffer()
