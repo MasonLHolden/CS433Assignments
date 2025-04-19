@@ -46,6 +46,8 @@ void *consumer(void *param) {
     while (true) {
         /* sleep for a random period of time */
         usleep(rand() % 1000000);
+
+        //remove item
         if (buffer.remove_item(&item)) {
             cout << "Consumer " << item << ": Removed item " << item << endl;
             buffer.print_buffer();
@@ -59,6 +61,7 @@ int main(int argc, char *argv[]) {
 
     /* 1.Get command line arguments argv[1],argv[2],argv[3] */
 
+    //if valid number of arguments, execute
     if (argc == 5) {
         int sleep_time = stoi(argv[1]);
         int num_producers = stoi(argv[2]);
@@ -73,11 +76,11 @@ int main(int argc, char *argv[]) {
 
             //Buffer initialized as global variable
 
-
+        //declare pthread and buffer item vectors
         vector<pthread_t> producer_threads(num_producers);
         vector<buffer_item> producer_ids(num_producers);
 
-
+        //increment and assign producer IDs
         for (int i = 0; i < num_producers; ++i) {
             producer_ids[i] = i+1;
             if (pthread_create(&producer_threads[i], nullptr, producer, &producer_ids[i]) != 0) {
@@ -89,6 +92,7 @@ int main(int argc, char *argv[]) {
         vector<pthread_t> consumer_threads(num_consumers);
         vector<buffer_item> consumer_ids(num_consumers);
 
+        //increment and assign consumer IDs
         for (int i = 0; i < num_consumers; ++i) {
             consumer_ids[i] = i+1;
 
