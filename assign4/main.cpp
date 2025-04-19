@@ -106,7 +106,6 @@ int main(int argc, char *argv[]) {
         cout << "Main thread sleeping for "<<sleep_time<<" seconds" << endl;
         sleep(sleep_time);
 
-
     }
 
     //Exit
