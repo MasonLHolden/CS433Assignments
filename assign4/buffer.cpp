@@ -16,8 +16,6 @@
 
 using namespace std;
 
-// TODO: Add your implementation of the buffer class here
-
 Buffer::Buffer(int size)
 {
 
@@ -123,4 +121,5 @@ void Buffer::print_buffer()
     cout<<"]"<<endl;
     pthread_mutex_unlock(&mutex);
 }
+
 
