@@ -18,7 +18,7 @@ using namespace std;
 
 Buffer::Buffer(int size)
 {
-
+    //initialize variables
     buffer_size = size;
     buffer_count = 0;
     buffer_array = new buffer_item[buffer_size];
@@ -35,7 +35,9 @@ Buffer::Buffer(int size)
 
 Buffer::~Buffer()
 {
+    //destroy buffer array
    delete[] buffer_array;
+    
     //destroy mutex and cond pthreads
     pthread_mutex_destroy(&mutex);
     pthread_cond_destroy(&full);
@@ -45,6 +47,7 @@ Buffer::~Buffer()
 bool Buffer::insert_item(buffer_item item)
 {
     pthread_mutex_lock(&mutex);
+    
     //wait when full
     while (is_full()) {  //loop a wait if the array is full
         pthread_cond_wait(&full, &mutex);
@@ -65,8 +68,11 @@ bool Buffer::insert_item(buffer_item item)
 
    
 bool Buffer::remove_item(buffer_item *item) {
+   
+    //lock
     pthread_mutex_lock(&mutex);
-    //wait when full
+    
+
     while (is_empty()) { //while the array is empty, loop
         pthread_cond_wait(&empty, &mutex); //wait
     }
@@ -79,6 +85,7 @@ bool Buffer::remove_item(buffer_item *item) {
 
     pthread_cond_signal(&full);
 
+    //unlock
     pthread_mutex_unlock(&mutex);
 
     return true;
@@ -106,7 +113,11 @@ bool Buffer::is_full()
 
 void Buffer::print_buffer()
 {
+    
+    //lock
     pthread_mutex_lock(&mutex);
+
+    //output contense of buffer in [#,#,#] form
     cout<<"Buffer: [";
     if (!is_empty()) {
         int index = front;
@@ -119,6 +130,8 @@ void Buffer::print_buffer()
         }
     }
     cout<<"]"<<endl;
+
+    //unlock
     pthread_mutex_unlock(&mutex);
 }
 
