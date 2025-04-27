@@ -1,49 +1,62 @@
 /**
 * Assignment 5: Page replacement algorithms
- * @file replacement.cpp
-* @author Mason Lavender Holden, Judah Fisher
- * @brief A base class for different page replacement algorithms.
+ * @file pagetable.h
+  * @author Mason Lavender Holden, Judah Fisher
+ * @brief This class represents a traditional pagetable data structure.
  * @version 0.1
  */
 //You must complete the all parts marked as "TODO". Delete "TODO" after you are done.
 // Remember to add sufficient and clear comments to your code
-#include <iostream>
-#include "replacement.h"
 
-// TODO: Add your implementation of the Replacement member functions here
+#pragma once
 
-// Constructor
-Replacement::Replacement(int num_pages, int num_frames)
-: page_table(num_pages)
+// Remember to add comments to your code
+#include <vector>
+using namespace std;
+
+// A page table entry
+/**
+ * @brief A page table entry. This class is used to represent a page table entry.
+ * @details Each page has one entry in the page table. It contains the following fields:
+ * - frame number
+ * - valid bit
+ */
+class PageEntry
 {
-	//TODO: Add your implementation here
-	for (int i=0; i<num_pages; i++) {
-		page_table[i].frame_num = -1;
-	}
+public:
+	// Physical frame number for a given page
+	int frame_num;
+	// valid bit represents whether a page is in the physical memory
+	bool valid = false;
+    // dirty bit represents whether a page is changed
+    bool dirty = false;
+};
 
-}
 
-// Destructor
-Replacement::~Replacement()
+/**
+ * @brief A page table is like an array of page entries.
+ * The size of the page table should equal to the number of pages in logical memory
+ */
+class PageTable
 {
-    // TOOD: Add your code here
-}
+private:
+    // A page table is like an array of page entries.
+    vector<PageEntry> pages;
+    int size; //size of page array (added by us)
+public:
+    // Constructor
+    PageTable(int num_pages);
+    // Destructor
+    ~PageTable();
 
-// Simulate a single page access 
-// @return true if it's a page fault
-bool Replacement::access_page(int page_num, bool is_write)
-{
-    // TODO: Add your implementation here
-    // If the page is valid, it calls the touch_page function. 
-    // If the page is not valid but free frames are available, it calls the load_page function.
-    // If the page is not valid and there is no free frame, it calls the replace_page function.
-    return false;
-}
+	// TODO: Add your implementation of the page table here
 
-// Print out statistics of simulation
-void Replacement::print_statistics() const {
-        // TODO: print out the number of references, number of page faults and number of page replacements
-		std::cout << "Number of references: \t\t"  << std::endl;
-		std::cout << "Number of page faults: \t\t" << std::endl;
-		std::cout << "Number of page replacements: \t"  << std::endl;
-}
+    /**
+     * @brief Access a page in the page table.
+     * @param i
+     * @return
+     */
+    PageEntry& operator [] (int i) {
+        return pages[i];
+    }
+};
