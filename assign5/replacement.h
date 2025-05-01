@@ -10,6 +10,7 @@
 #pragma once
 
 #include "pagetable.h"
+#include <list>
 
 
 /**
@@ -24,6 +25,12 @@ protected:      // subclasses can access these members
 	// TODO: Add additional member variables to this class
 	int num_pages; //number of pages
 	int num_frames; //number of frames
+	int num_references; //number of references
+	int num_page_faults;
+	int num_replacements;
+
+	list<int> free_frames;
+
 public:
 	/**
 	 * @brief 
@@ -54,7 +61,9 @@ public:
 	 * It may be overridden in a subclass 
 	 * @param page_num The logical page number.
      */
-    virtual void touch_page(int page_num) {}
+    virtual void touch_page(int page_num) {
+		this->access_page(page_num, true);
+    }
 
     /**
      * @brief Access an invalid page, but free frames are available.
@@ -62,7 +71,9 @@ public:
      * It may be overridden in a subclass 
      * @param page_num The logical page number.
      */
-    virtual void load_page(int page_num) {}
+    virtual void load_page(int page_num) {
+
+    }
 
 
     /**
