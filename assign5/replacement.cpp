@@ -19,8 +19,21 @@ Replacement::Replacement(int num_pages, int num_frames)
 	//TODO: Add your implementation here
 	for (int i=0; i<num_pages; i++) {
 		page_table[i].frame_num = -1;
+		page_table[i].valid = false;
+		page_table[i].dirty = false;
 	}
 
+	//initialize variables
+	this->num_frames = num_frames;
+	this->num_pages = num_pages;
+	this->num_replacements = 0;
+	this->num_page_faults = 0;
+	this->num_references = 0;
+
+	//Initialize free frames list
+	for (int i = 0; i< num_frames; i++) {
+		free_frames.push_back(i);
+	}
 }
 
 // Destructor
@@ -34,6 +47,16 @@ Replacement::~Replacement()
 bool Replacement::access_page(int page_num, bool is_write)
 {
     // TODO: Add your implementation here
+	if (page_table[page_num].frame_num == -1) { //valid so call touch_page
+		touch_page(page_num);
+	}
+		else if (page_table[page_num].frame_num !=-1) { // not valid but free frames
+
+		}
+			else if (page_table[page_num].frame_num !=-1) { // not valid and no free frame
+
+			}
+
     // If the page is valid, it calls the touch_page function. 
     // If the page is not valid but free frames are available, it calls the load_page function.
     // If the page is not valid and there is no free frame, it calls the replace_page function.
@@ -47,3 +70,4 @@ void Replacement::print_statistics() const {
 		std::cout << "Number of page faults: \t\t" << std::endl;
 		std::cout << "Number of page replacements: \t"  << std::endl;
 }
+
