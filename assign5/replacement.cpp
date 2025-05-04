@@ -47,19 +47,55 @@ Replacement::~Replacement()
 bool Replacement::access_page(int page_num, bool is_write)
 {
     // TODO: Add your implementation here
-	if (page_table[page_num].frame_num == -1) { //valid so call touch_page
-		touch_page(page_num);
+
+    num_references++;
+
+    // If the page is valid, it calls the touch_page function.
+	if (page_table[page_num].valid) { //valid so call touch_page
+
+        if(is_write) {
+       		page_table[page_num].dirty = true;
+        }
+        touch_page(page_num);
+        return false;
 	}
-		else if (page_table[page_num].frame_num !=-1) { // not valid but free frames
+	// If the page is not valid but free frames are available, it calls the load_page function.
+		else { // not valid but free frames
 
-		}
-			else if (page_table[page_num].frame_num !=-1) { // not valid and no free frame
+		// If the page is not valid and there is no free frame, it calls the replace_page function.
+          if(!free_frames.empty()) {
+            int frame = free_frames.front();
+            free_frames.pop_front();
 
-			}
+            page_table[page_num].frame_num = frame;
+            page_table[page_num].valid = true;
 
-    // If the page is valid, it calls the touch_page function. 
-    // If the page is not valid but free frames are available, it calls the load_page function.
-    // If the page is not valid and there is no free frame, it calls the replace_page function.
+            load_page(page_num);
+          }
+          else
+            {
+            	//no free frames so replace a page
+            	int victim_page = replace_page(page_num);
+
+                //mark the victim page as invalid
+                int victim_frame = page_table[victim_page].frame_num;
+                page_table[victim_page].valid = false;
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
     return false;
 }
 
@@ -71,3 +107,5 @@ void Replacement::print_statistics() const {
 		std::cout << "Number of page replacements: \t"  << std::endl;
 }
 
+
+}
