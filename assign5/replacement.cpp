@@ -84,7 +84,7 @@ bool Replacement::access_page(int page_num, bool is_write)
 
             }
 
-
+	}
 
 
 
@@ -108,4 +108,3 @@ void Replacement::print_statistics() const {
 }
 
 
-}
