@@ -59,6 +59,12 @@ bool Replacement::access_page(int page_num, bool is_write)
         touch_page(page_num);
         return false;
 	}
+	
+	num_page_faults++;
+
+	if(is_write){
+		page_table[page_num].dirty = true;
+	}
 	// If the page is not valid but free frames are available, it calls the load_page function.
 		else { // not valid but free frames
 
@@ -79,25 +85,17 @@ bool Replacement::access_page(int page_num, bool is_write)
 
                 //mark the victim page as invalid
                 int victim_frame = page_table[victim_page].frame_num;
-                page_table[victim_page].valid = false;
+                
+		page_table[victim_page].valid = false;
+		page_table[victim_page].frame_num = -1;
 
+		page_table[page_num].frame_num = victim_frame;
+		page_table[page_num].valid = true;
 
+		num_replacements++;
             }
-
+		return true;
 	}
-
-
-
-
-
-
-
-
-
-
-
-    return false;
-}
 
 // Print out statistics of simulation
 void Replacement::print_statistics() const {
