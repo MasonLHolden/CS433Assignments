@@ -99,6 +99,7 @@ bool Replacement::access_page(int page_num, bool is_write)
             }
 		return true;
 	}
+}
 
 // Print out statistics of simulation
 void Replacement::print_statistics() const {
