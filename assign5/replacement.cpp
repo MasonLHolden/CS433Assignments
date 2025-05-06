@@ -83,15 +83,18 @@ bool Replacement::access_page(int page_num, bool is_write)
             	//no free frames so replace a page
             	int victim_page = replace_page(page_num);
 
-                //mark the victim page as invalid
+                //get victim frame
                 int victim_frame = page_table[victim_page].frame_num;
-                
+
+		//mark victim as invalid
 		page_table[victim_page].valid = false;
 		page_table[victim_page].frame_num = -1;
 
+		//assign the frame to the new page
 		page_table[page_num].frame_num = victim_frame;
 		page_table[page_num].valid = true;
 
+		//increment number of replacements
 		num_replacements++;
             }
 		return true;
@@ -100,9 +103,9 @@ bool Replacement::access_page(int page_num, bool is_write)
 // Print out statistics of simulation
 void Replacement::print_statistics() const {
         // TODO: print out the number of references, number of page faults and number of page replacements
-		std::cout << "Number of references: \t\t"  << std::endl;
-		std::cout << "Number of page faults: \t\t" << std::endl;
-		std::cout << "Number of page replacements: \t"  << std::endl;
+		std::cout << "Number of references: \t\t"  << num_references <<std::endl;
+		std::cout << "Number of page faults: \t\t" << num_page_faults <<std::endl;
+		std::cout << "Number of page replacements: \t"  << num_replacements <<std::endl;
 }
 
 
