@@ -19,16 +19,38 @@ LIFOReplacement::LIFOReplacement(int num_pages, int num_frames)
 
 // TODO: Add your implementations for desctructor, load_page, replace_page here
 LIFOReplacement::~LIFOReplacement() {
-    // TODO: Add necessary code here
+//don't think anything needs to happen because vector already removes everything.
 }
 
 // Access an invalid page, but free frames are available
 void LIFOReplacement::load_page(int page_num) {
-    // TODO: Add necessary code here
+    int i = 0; 
+    while(page_table[i].frame_num != -1) //incrementing until we get to a empty slot.
+        i++; //incrementing counter
+    
+    if(page_table[i].frame_num ==-1) //if we have an empty slot
+    page_table[i].frame_num = page_num; //changing value
+
+
 }
 
 // Access an invalid page and no free frames are available
 int LIFOReplacement::replace_page(int page_num) {
     // TODO: Add necessary code here
-    return 0;
+       //find oldest index, 
+ int youngest = 999;//starting oldest at big number
+ int yIndex; //the index where the oldest value is
+ for(int i = 0; i<0; i++)
+ {
+    if(page_table[i].age < youngest)
+    {
+        youngest = page_table[i].age;
+        yIndex = i;
+    }
+ }
+
+    //replace youngest index,
+    //reset the newest that replaced the oldest's age to 0
+    //increment age for everything.
+    return yIndex;
 }
