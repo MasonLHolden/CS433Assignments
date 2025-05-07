@@ -44,13 +44,21 @@ int LIFOReplacement::replace_page(int page_num) {
  {
     if(page_table[i].age < youngest)
     {
+        //replace youngest index,
         youngest = page_table[i].age;
         yIndex = i;
     }
  }
 
-    //replace youngest index,
+ 
+
     //reset the newest that replaced the oldest's age to 0
+    page_table[yIndex].age = 0;
     //increment age for everything.
+    for (int i = 0; i < page_table.size; i++)
+    {
+        page_table[i].age++;
+    }
+    
     return yIndex;
 }
