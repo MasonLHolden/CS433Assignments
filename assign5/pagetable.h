@@ -30,6 +30,8 @@ public:
 	bool valid = false;
     // dirty bit represents whether a page is changed
     bool dirty = false;
+    int age= 0; //counter
+
 };
 
 
