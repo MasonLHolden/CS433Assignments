@@ -57,12 +57,22 @@ int FIFOReplacement::replace_page(int page_num) {
  {
     if(page_table[i].age > oldest)
     {
+            //replace oldest index
         oldest = page_table[i].age;
         oIndex = i;
     }
  }
 
-    //replace oldest index,
+    
+    
+    //reset the newest that replaced the oldest's age to 0
+    page_table[oIndex].age = 0;
+    //increment age for everything.
+    for (int i = 0; i < page_table.size; i++)
+    {
+        page_table[i].age++;
+    }
+    
     //reset the newest that replaced the oldest's age to 0
     //increment age for everything.
     return oIndex;
