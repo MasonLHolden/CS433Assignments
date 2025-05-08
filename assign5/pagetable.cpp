@@ -17,9 +17,14 @@
 
 PageTable::PageTable(int num_pages) {
  // TODO: Add your code
- pages[num_pages];
+  pages.resize(num_pages);
+  this->size = num_pages;
 
-}
+    for (int i = 0; i < num_pages; i++) {
+      pages[i].valid = false;
+      pages[i].frame_num = -1;
+     }
+  }
 PageTable::~PageTable() {
     
 }
