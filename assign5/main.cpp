@@ -75,16 +75,20 @@ int main(int argc, char *argv[]) {
         std::cerr << "Cannot open small_refs.txt to read. Please check your path." << std::endl;
         return 1;
     }
+    cout<<"SEGGY HERE?????"<<std::endl;
     int val;
     // Create a vector to store the logical addresses
     std::vector<int> small_refs;
     while (in >> val) {
         small_refs.push_back(val);
     }
+    cout<<"SEGGY2"<<std::endl;
     // Create a virtual memory simulation using FIFO replacement algorithm
     FIFOReplacement vm(num_pages, num_frames);
+    cout<<"SEGGY3"<<std::endl;
     for (std::vector<int>::const_iterator it = small_refs.begin(); it != small_refs.end(); ++it) {
         int page_num = (*it) >> page_offset_bits;
+        cout<<"SEGGY HERE?3"<<std::endl;
         bool isPageFault = vm.access_page(page_num, 0);
         PageEntry pg = vm.getPageEntry(page_num);
         std::cout << "Logical address: " << *it << ", \tpage number: " << page_num;
