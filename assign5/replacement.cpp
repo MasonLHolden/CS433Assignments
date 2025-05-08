@@ -22,26 +22,25 @@ Replacement::Replacement(int num_pages, int num_frames)
 	this->num_replacements = 0;
 	this->num_page_faults = 0;
 	this->num_references = 0;
-  cout<<"SEGGY4"<<std::endl;
 	//TODO: Add your implementation here
-	//for (int i=0; i<num_pages; i++) {
-          cout<<"SEGGY4.5"<<std::endl;
-		page_table[0].frame_num = -1;
-		cout<<"SEGGY4.6"<<std::endl;
-		page_table[0].valid = false;
-		cout<<"SEGGY4.7"<<std::endl;
-		page_table[0].dirty = false;
-		cout<<"SEGGY4.8"<<std::endl;
-	//}
-	cout<<"SEGGY5"<<std::endl;
+	for (int i=0; i<num_pages; i++) {
+
+		page_table[i].frame_num = -1;
+
+		page_table[i].valid = false;
+//		cout<<"SEGGY4.7"<<std::endl;
+		page_table[i].dirty = false;
+//		cout<<"SEGGY4.8"<<std::endl;
+	}
+//	cout<<"SEGGY5"<<std::endl;
 	//initialize variables
 
-	cout<<"SEGGY6"<<std::endl;
+//	cout<<"SEGGY6"<<std::endl;
 	//Initialize free frames list
 	for (int i = 0; i< num_frames; i++) {
 		free_frames.push_back(i);
 	}
-        cout<<"SEGGY7"<<std::endl;
+      //  cout<<"SEGGY7"<<std::endl;
 }
 
 // Destructor
@@ -55,11 +54,12 @@ Replacement::~Replacement()
 bool Replacement::access_page(int page_num, bool is_write)
 {
     // TODO: Add your implementation here
-
+cout<<"test 1"<<endl;
     num_references++;
 
     // If the page is valid, it calls the touch_page function.
 	if (page_table[page_num].valid) { //valid so call touch_page
+		cout<<"test 2"<<endl;
 
         if(is_write) {
        		page_table[page_num].dirty = true;
@@ -71,6 +71,7 @@ bool Replacement::access_page(int page_num, bool is_write)
 	num_page_faults++;
 
 	if(is_write){
+		cout<<"test 3"<<endl;
 		page_table[page_num].dirty = true;
 	}
 	// If the page is not valid but free frames are available, it calls the load_page function.
@@ -107,6 +108,7 @@ bool Replacement::access_page(int page_num, bool is_write)
             }
 		return true;
 	}
+	return true; //template because of warning when compiling. Warning came from not having a return value in all paths.
 }
 
 // Print out statistics of simulation
