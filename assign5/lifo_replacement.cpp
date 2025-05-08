@@ -37,7 +37,8 @@ void LIFOReplacement::load_page(int page_num) {
 // Access an invalid page and no free frames are available
 int LIFOReplacement::replace_page(int page_num) {
     // TODO: Add necessary code here
-       //find oldest index, 
+       //find oldest index,
+    int victim;
  int youngest = 999;//starting oldest at big number
  int yIndex; //the index where the oldest value is
  for(int i = 0; i<0; i++)
@@ -45,6 +46,7 @@ int LIFOReplacement::replace_page(int page_num) {
     if(page_table[i].age < youngest)
     {
         //replace youngest index,
+        victim = page_table[i].frame_num;
         youngest = page_table[i].age;
         yIndex = i;
     }
@@ -60,5 +62,5 @@ int LIFOReplacement::replace_page(int page_num) {
         page_table[i].age++;
     }
     
-    return yIndex;
+    return victim;
 }
