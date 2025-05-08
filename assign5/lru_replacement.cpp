@@ -9,12 +9,21 @@
 // Remember to add sufficient and clear comments to your code
 
 #include "lru_replacement.h"
+#include <algorithm>
+#include <list>
 
 // TODO: Add your implementation here
 LRUReplacement::LRUReplacement(int num_pages, int num_frames)
 : Replacement(num_pages, num_frames)
 {
-    // TODO: Complete this constructor
+    //initialize page table entries
+     for(int i = 0; i < num_frames; i++) {
+      page_table[i].valid = false;
+      page_table[i].frame_num = -1;
+    }
+
+    //all frames initially free
+    //free_frames = num_frames;
 }
 
 // TODO: Add your implementations for desctructor, touch_page, load_page, replace_page here
