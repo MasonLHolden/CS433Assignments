@@ -16,24 +16,32 @@
 Replacement::Replacement(int num_pages, int num_frames)
 : page_table(num_pages)
 {
-	//TODO: Add your implementation here
-	for (int i=0; i<num_pages; i++) {
-		page_table[i].frame_num = -1;
-		page_table[i].valid = false;
-		page_table[i].dirty = false;
-	}
-
-	//initialize variables
+ // page_table.resize(num_pages);
 	this->num_frames = num_frames;
 	this->num_pages = num_pages;
 	this->num_replacements = 0;
 	this->num_page_faults = 0;
 	this->num_references = 0;
+  cout<<"SEGGY4"<<std::endl;
+	//TODO: Add your implementation here
+	//for (int i=0; i<num_pages; i++) {
+          cout<<"SEGGY4.5"<<std::endl;
+		page_table[0].frame_num = -1;
+		cout<<"SEGGY4.6"<<std::endl;
+		page_table[0].valid = false;
+		cout<<"SEGGY4.7"<<std::endl;
+		page_table[0].dirty = false;
+		cout<<"SEGGY4.8"<<std::endl;
+	//}
+	cout<<"SEGGY5"<<std::endl;
+	//initialize variables
 
+	cout<<"SEGGY6"<<std::endl;
 	//Initialize free frames list
 	for (int i = 0; i< num_frames; i++) {
 		free_frames.push_back(i);
 	}
+        cout<<"SEGGY7"<<std::endl;
 }
 
 // Destructor
