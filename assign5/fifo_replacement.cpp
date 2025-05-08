@@ -9,11 +9,15 @@
 // Remember to add sufficient and clear comments to your code
 
 #include "fifo_replacement.h"
+#include <iostream>
 
 // TODO: Add your implementation here
 FIFOReplacement::FIFOReplacement(int num_pages, int num_frames)
 : Replacement(num_pages, num_frames)
 {
+  cout<<"FIFO constructor created"<<endl;
+this->num_pages = num_pages;
+this->num_frames = num_frames;
 
     // TODO: Add additional implementation code
 }
@@ -50,7 +54,8 @@ int i = 0;
 	 */
 // Access an invalid page and no free frames are available
 int FIFOReplacement::replace_page(int page_num) {
-    //find oldest index, 
+    //find oldest index,
+    int victim;
  int oldest = -999;//starting oldest at tiny number
  int oIndex; //the index where the oldest value is
  for(int i = 0; i<0; i++)
@@ -58,6 +63,7 @@ int FIFOReplacement::replace_page(int page_num) {
     if(page_table[i].age > oldest)
     {
             //replace oldest index
+            victim = page_table[i].frame_num;
         oldest = page_table[i].age;
         oIndex = i;
     }
@@ -75,5 +81,5 @@ int FIFOReplacement::replace_page(int page_num) {
     
     //reset the newest that replaced the oldest's age to 0
     //increment age for everything.
-    return oIndex;
+    return victim;
 }
