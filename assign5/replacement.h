@@ -63,7 +63,6 @@ public:
 	 * @param page_num The logical page number.
      */
     virtual void touch_page(int page_num) {
-        cout<<"Hello from touch_page"<<endl;
 		this->access_page(page_num, true);
     }
 
@@ -74,7 +73,6 @@ public:
      * @param page_num The logical page number.
      */
     virtual void load_page(int page_num) {
-        cout<<"Hello from load_page"<<endl;
 
     }
 
@@ -92,7 +90,6 @@ public:
 	 * @brief Get the ith entry of the page table
 	 */
     PageEntry getPageEntry(int page_num) {
-        cout<<"Hello from getPageEntry"<<endl;
         return page_table[page_num];
     }
 
