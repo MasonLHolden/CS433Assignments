@@ -11,6 +11,7 @@
 #include "lru_replacement.h"
 #include <algorithm>
 #include <list>
+using namespace std;
 
 // TODO: Add your implementation here
 LRUReplacement::LRUReplacement(int num_pages, int num_frames)
@@ -21,6 +22,8 @@ LRUReplacement::LRUReplacement(int num_pages, int num_frames)
       page_table[i].valid = false;
       page_table[i].frame_num = -1;
     }
+
+
 
     //all frames initially free
     //free_frames = num_frames;
@@ -35,12 +38,25 @@ LRUReplacement::~LRUReplacement()
 // Accesss a page alreay in physical memory
 void LRUReplacement::touch_page(int page_num)
 {
-    // TODO: Update your data structure LRU replacement
+    list<int>::iterator it = find(lru_list.begin(), lru_list.end(), page_num);
+    if(it != lru_list.end()) {
+      lru_list.erase(it);
+    }
+
+    lru_list.push_back(page_num);
+
+    page_hits++;
 }
 
 // Access an invalid page, but free frames are available
 void LRUReplacement::load_page(int page_num) {
-    // TODO: Update your data structure LRU replacement and pagetable
+
+      int frame = -1;
+      for(int i = 0; i < num_frames; i++) {
+        if(frame_table[i] == -1)
+          frame = i;
+            break;
+      }
 }
 
 // Access an invalid page and no free frames are available
