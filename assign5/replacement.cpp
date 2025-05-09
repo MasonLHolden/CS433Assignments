@@ -69,7 +69,6 @@ bool Replacement::access_page(int page_num, bool is_write)
      //   return false;
 	}
 	
-	num_page_faults++;
 
 	if(is_write){
 
@@ -92,6 +91,7 @@ bool Replacement::access_page(int page_num, bool is_write)
             {
             	//no free frames so replace a page
             	int victim_page = replace_page(page_num);
+     	     	num_page_faults++;
 
                 //get victim frame
                 int victim_frame = page_table[victim_page].frame_num;
