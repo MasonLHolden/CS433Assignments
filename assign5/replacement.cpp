@@ -28,19 +28,19 @@ Replacement::Replacement(int num_pages, int num_frames)
 		page_table[i].frame_num = -1;
 
 		page_table[i].valid = false;
-//		cout<<"SEGGY4.7"<<std::endl;
+
 		page_table[i].dirty = false;
-//		cout<<"SEGGY4.8"<<std::endl;
+
 	}
-//	cout<<"SEGGY5"<<std::endl;
+
 	//initialize variables
 
-//	cout<<"SEGGY6"<<std::endl;
+
 	//Initialize free frames list
 	for (int i = 0; i< num_frames; i++) {
 		free_frames.push_back(i);
 	}
-      //  cout<<"SEGGY7"<<std::endl;
+
 }
 
 // Destructor
@@ -54,24 +54,25 @@ Replacement::~Replacement()
 bool Replacement::access_page(int page_num, bool is_write)
 {
     // TODO: Add your implementation here
-cout<<"test 1"<<endl;
+
     num_references++;
 
     // If the page is valid, it calls the touch_page function.
 	if (page_table[page_num].valid) { //valid so call touch_page
-		cout<<"test 2"<<endl;
 
+		// touch_page(page_num); //here???
+		//return false;
         if(is_write) {
        		page_table[page_num].dirty = true;
         }
-        touch_page(page_num);
-        return false;
+       // touch_page(page_num); //here???
+     //   return false;
 	}
 	
 	num_page_faults++;
 
 	if(is_write){
-		cout<<"test 3"<<endl;
+
 		page_table[page_num].dirty = true;
 	}
 	// If the page is not valid but free frames are available, it calls the load_page function.
@@ -113,7 +114,6 @@ cout<<"test 1"<<endl;
 
 // Print out statistics of simulation
 void Replacement::print_statistics() const {
-        // TODO: print out the number of references, number of page faults and number of page replacements
 		std::cout << "Number of references: \t\t"  << num_references <<std::endl;
 		std::cout << "Number of page faults: \t\t" << num_page_faults <<std::endl;
 		std::cout << "Number of page replacements: \t"  << num_replacements <<std::endl;
