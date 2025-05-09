@@ -51,16 +51,60 @@ void LRUReplacement::touch_page(int page_num)
 // Access an invalid page, but free frames are available
 void LRUReplacement::load_page(int page_num) {
 
+  // find first available free frame
       int frame = -1;
       for(int i = 0; i < num_frames; i++) {
-        if(frame_table[i] == -1)
+        if(page_table[i].frame_num == -1){
           frame = i;
             break;
+            }
       }
+
+      //Update page table
+      page_table[page_num].valid = true;
+      page_table[page_num].frame_num = frame;
+
+      // update page_table to inicate wich page occupies the frame
+      page_table[frame].frame_num = page_num;
+
+      // add page to LRU list
+      lru_list.push_back(page_num);
+
+      // decrement the count of free frames
+      free_frames--;
+
+      // increments page fault counter
+      page_faults++;
+
 }
 
 // Access an invalid page and no free frames are available
 int LRUReplacement::replace_page(int page_num) {
-    // TODO: Update your data structure LRU replacement and pagetable
-    return 0;
+
+    //get least recently used page
+    int lru_page_num = lru_list.front();
+    lru_list.pop_front();
+
+    //get frame occupied by LRU page
+    int victim_frame = page_table[lru_page_num].frame_num;
+
+    //mark the LRU page as invalid  in the page table
+    page_table[lru_page_num].valid = false;
+    page_table[lru_page_num].frame_num = -1;
+
+    //Update page table to show new page is in frame
+    page_table[victim_frame].frame_num = page_num;
+
+    //Update page table for new page
+    page_table[page_num].valid = true;
+    page_table[page_num].frame_num = victim_frame;
+
+    //add new page to lru list
+    lru_list.push_back(page_num);
+
+    //Update counters
+    page_faults++;
+    replacements++;
+
+    return victim_frame;
 }
