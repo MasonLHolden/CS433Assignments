@@ -15,7 +15,6 @@
 FIFOReplacement::FIFOReplacement(int num_pages, int num_frames)
 : Replacement(num_pages, num_frames)
 {
-  cout<<"FIFO constructor created"<<endl;
 this->num_pages = num_pages;
 this->num_frames = num_frames;
 
