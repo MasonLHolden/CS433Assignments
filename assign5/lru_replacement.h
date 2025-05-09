@@ -13,7 +13,8 @@
 // Remember to add comments to your code
 
 #include "replacement.h"
-
+#include <list>
+using namespace std;
 /**
  * @brief A class to simulate the least recently used (LRU) page replacement algorithm.
  */
@@ -21,7 +22,14 @@ class LRUReplacement : public Replacement
 {
 	// TODO: Add your implementation to this class
 public:
+	list<int> lru_list;
+    int page_hits;
+    int page_faults;
+    int replacements;
 
+    int num_pages;
+    int num_frames;
+    int free_frames;
 
 
   	/**
