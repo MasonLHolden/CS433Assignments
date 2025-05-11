@@ -53,37 +53,42 @@ Replacement::~Replacement()
 // @return true if it's a page fault
 bool Replacement::access_page(int page_num, bool is_write)
 {
-    // TODO: Add your implementation here
-
-    num_references++;
+	num_references++;
+//base case:
+if(num_references==num_frames) {
+  return false;
+}
 
     // If the page is valid, it calls the touch_page function.
 	if (page_table[page_num].valid) { //valid so call touch_page
 
 		// touch_page(page_num); //here???
 		//return false;
-        if(is_write) {
-       		page_table[page_num].dirty = true;
-        }
-       // touch_page(page_num); //here???
-     //   return false;
+        //if(is_write) {
+       	//	page_table[page_num].dirty = true;
+        //}
+       //
+     touch_page(page_num); //causing seg fault?
+     	return false;
 	}
-	
 
-	if(is_write){
+     num_page_faults++;
 
-		page_table[page_num].dirty = true;
-	}
-	// If the page is not valid but free frames are available, it calls the load_page function.
-		else { // not valid but free frames
+
+		// If the page is not valid but free frames are available, it calls the load_page function.
 
 		// If the page is not valid and there is no free frame, it calls the replace_page function.
           if(!free_frames.empty()) {
             int frame = free_frames.front();
             free_frames.pop_front();
 
+            //assign the frame to page
             page_table[page_num].frame_num = frame;
             page_table[page_num].valid = true;
+
+      //      if(is_write) {
+        //      page_table[page_num].dirty = true;
+          //  }
 
             load_page(page_num);
           }
@@ -96,21 +101,29 @@ bool Replacement::access_page(int page_num, bool is_write)
                 //get victim frame
                 int victim_frame = page_table[victim_page].frame_num;
 
-		//mark victim as invalid
-		page_table[victim_page].valid = false;
-		page_table[victim_page].frame_num = -1;
+				//mark victim as invalid
+				page_table[victim_page].valid = false;
+				page_table[victim_page].frame_num = -1;
 
-		//assign the frame to the new page
-		page_table[page_num].frame_num = victim_frame;
-		page_table[page_num].valid = true;
+				//assign the frame to the new page
+				page_table[page_num].frame_num = victim_frame;
+				page_table[page_num].valid = true;
 
-		//increment number of replacements
-		num_replacements++;
-            }
-		return true;
+            //     if(is_write) {
+              //     page_table[page_num].dirty = true;
+                // }
+
+          		load_page(page_num);
+				//increment number of replacements
+				num_replacements++;
+
+            	}
+
+              	touch_page(page_num);
+
+				return true;
 	}
-	return true; //template because of warning when compiling. Warning came from not having a return value in all paths.
-}
+
 
 // Print out statistics of simulation
 void Replacement::print_statistics() const {
