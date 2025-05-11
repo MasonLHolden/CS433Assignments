@@ -101,10 +101,8 @@ int LRUReplacement::replace_page(int page_num) {
 
     //add new page to lru list
     lru_list.push_back(page_num);
-
     //Update counters
     page_faults++;
     replacements++;
-
     return victim_frame;
 }
