@@ -91,7 +91,6 @@ int main(int argc, char *argv[]) {
     }
     // Create a virtual memory simulation using FIFO replacement algorithm
     FIFOReplacement vm(num_pages, num_frames);
-   // cout<<"SEGGY333"<<std::endl;
     for (std::vector<int>::const_iterator it = small_refs.begin(); it != small_refs.end(); ++it) {
         int page_num = (*it) >> page_offset_bits;
 
@@ -122,14 +121,13 @@ int main(int argc, char *argv[]) {
     // Create a virtual memory simulation using FIFO replacement algorithm
     FIFOReplacement vm2(num_pages, num_frames);
     for (std::vector<int>::const_iterator it = small_refs2.begin(); it != small_refs2.end(); ++it) {
-        int page_num = (*it) >> page_offset_bits;
+        int page_num2 = (*it) >> page_offset_bits;
 
-        bool isPageFault = vm2.access_page(page_num, 0);
+        bool isPageFault = vm2.access_page(page_num2, 0);
 
-        PageEntry pg = vm2.getPageEntry(page_num);
-        std::cout << "Logical address: " << *it << ", \tpage number: " << page_num;
+        PageEntry pg = vm2.getPageEntry(page_num2);
+        std::cout << "Logical address: " << *it << ", \tpage number: " << page_num2;
         std::cout << ", \tframe number = " << pg.frame_num << ", \tis page fault? " << isPageFault << std::endl;
-        //cout<< "
     auto end1 = std::chrono::steady_clock::now();
     auto duration1 = std::chrono::duration_cast<std::chrono::milliseconds>(end1 - start1);
     }
