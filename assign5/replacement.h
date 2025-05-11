@@ -63,7 +63,7 @@ public:
 	 * @param page_num The logical page number.
      */
     virtual void touch_page(int page_num) {
-		this->access_page(page_num, true);
+    	page_table[page_num].dirty = true;
     }
 
     /**
