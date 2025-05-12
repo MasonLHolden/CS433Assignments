@@ -11,17 +11,14 @@
 #include "fifo_replacement.h"
 #include <iostream>
 
-// TODO: Add your implementation here
 FIFOReplacement::FIFOReplacement(int num_pages, int num_frames)
 : Replacement(num_pages, num_frames)
 {
-this->num_pages = num_pages;
-this->num_frames = num_frames;
+//this->num_pages = num_pages;
+//this->num_frames = num_frames;
 
-    // TODO: Add additional implementation code
 }
 
-// TODO: Add your implementations for desctructor, load_page, replace_page here
 FIFOReplacement::~FIFOReplacement() {
     //don't think anything needs to be added here.
 }
@@ -34,13 +31,32 @@ FIFOReplacement::~FIFOReplacement() {
      * @param page_num The logical page number.
      */
 void FIFOReplacement::load_page(int page_num) {
-    // TODO: Update your data structure FIFO replacement and pagetable
-int i = 0; 
-    while(page_table[i].frame_num != -1) //incrementing until we get to a empty slot.
-        i++; //incrementing counter
-    
-    if(page_table[i].frame_num ==-1) //if we have an empty slot
-    page_table[i].frame_num = page_num; //changing value
+
+if (free_frames.size() > 0)
+  {
+    int free_frame = -1;
+    auto it = free_frames.begin();
+    for (int i = 0; i < free_frames.size(); i++)
+      {
+          int frame_index = *it;
+          if(!page_table[frame_index].valid)
+            {
+                free_frame = frame_index;
+                break;
+            }
+      }
+
+      if(free_frame != -1)
+        {
+            page_table[page_num].valid = true;
+            page_table[page_num].frame_num = free_frame;
+
+            free_frames.remove(free_frame);
+
+
+        }
+  }
+
 
 }
 
