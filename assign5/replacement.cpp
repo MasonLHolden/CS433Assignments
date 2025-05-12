@@ -10,7 +10,6 @@
 #include <iostream>
 #include "replacement.h"
 
-// TODO: Add your implementation of the Replacement member functions here
 
 // Constructor
 Replacement::Replacement(int num_pages, int num_frames)
@@ -22,7 +21,6 @@ Replacement::Replacement(int num_pages, int num_frames)
 	this->num_replacements = 0;
 	this->num_page_faults = 0;
 	this->num_references = 0;
-	//TODO: Add your implementation here
 	for (int i=0; i<num_pages; i++) {
 
 		page_table[i].frame_num = -1;
