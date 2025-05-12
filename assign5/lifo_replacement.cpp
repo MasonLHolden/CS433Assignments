@@ -10,14 +10,11 @@
 
 #include "lifo_replacement.h"
 
-// TODO: Add your implementation here
 LIFOReplacement::LIFOReplacement(int num_pages, int num_frames)
 : Replacement(num_pages, num_frames)
 {
-    // TODO: Add additional implementation code
 }
 
-// TODO: Add your implementations for desctructor, load_page, replace_page here
 LIFOReplacement::~LIFOReplacement() {
 //don't think anything needs to happen because vector already removes everything.
 }
@@ -36,7 +33,6 @@ void LIFOReplacement::load_page(int page_num) {
 
 // Access an invalid page and no free frames are available
 int LIFOReplacement::replace_page(int page_num) {
-    // TODO: Add necessary code here
        //find oldest index,
     int victim;
  int youngest = 999;//starting oldest at big number
