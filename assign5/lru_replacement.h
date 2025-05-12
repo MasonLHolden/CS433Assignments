@@ -20,7 +20,6 @@ using namespace std;
  */
 class LRUReplacement : public Replacement
 {
-	// TODO: Add your implementation to this class
 public:
 	list<int> lru_list;
     int page_hits;
