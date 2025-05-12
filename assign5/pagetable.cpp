@@ -10,13 +10,10 @@
 
 #include "pagetable.h"
 
-// TODO: Add your implementation of PageTable
 // Constrcutor
-// TODO: Add your code
 
 
 PageTable::PageTable(int num_pages) {
- // TODO: Add your code
   pages.resize(num_pages);
   this->size = num_pages;
 
