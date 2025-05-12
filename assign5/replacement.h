@@ -23,7 +23,6 @@ class Replacement
 protected:      // subclasses can access these members
     // Member variable for the page table
     PageTable page_table;
-	// TODO: Add additional member variables to this class
 	int num_pages; //number of pages
 	int num_frames; //number of frames
 	int num_references; //number of references
@@ -45,7 +44,6 @@ public:
      */
     virtual ~Replacement();
 
-	// TODO: Add additional member variables and functions if needed
     /**
 	 * @brief Simulate a single page access.
      * @details If the page is valid, it calls the touch_page function. 
