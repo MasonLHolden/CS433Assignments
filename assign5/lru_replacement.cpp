@@ -13,7 +13,6 @@
 #include <list>
 using namespace std;
 
-// TODO: Add your implementation here
 LRUReplacement::LRUReplacement(int num_pages, int num_frames)
 : Replacement(num_pages, num_frames)
 {
@@ -29,10 +28,8 @@ LRUReplacement::LRUReplacement(int num_pages, int num_frames)
     //free_frames = num_frames;
 }
 
-// TODO: Add your implementations for desctructor, touch_page, load_page, replace_page here
 LRUReplacement::~LRUReplacement()
 {
-    // TODO: Add necessary code here
 }
 
 // Accesss a page alreay in physical memory
@@ -101,6 +98,7 @@ int LRUReplacement::replace_page(int page_num) {
 
     //add new page to lru list
     lru_list.push_back(page_num);
+
     //Update counters
     page_faults++;
     replacements++;
