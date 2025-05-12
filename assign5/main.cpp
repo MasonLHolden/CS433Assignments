@@ -89,6 +89,7 @@ int main(int argc, char *argv[]) {
     while (in >> val) {
         small_refs.push_back(val);
     }
+    in.close();
     // Create a virtual memory simulation using FIFO replacement algorithm
     FIFOReplacement vm(num_pages, num_frames);
     for (std::vector<int>::const_iterator it = small_refs.begin(); it != small_refs.end(); ++it) {
@@ -100,53 +101,86 @@ int main(int argc, char *argv[]) {
         std::cout << "Logical address: " << *it << ", \tpage number: " << page_num;
         std::cout << ", \tframe number = " << pg.frame_num << ", \tis page fault? " << isPageFault << std::endl;
     }
-    in.close();
+    //in.close();
     vm.print_statistics();
 
     // Test 2: Read and simulate the large list of logical addresses from the input file "large_refs.txt"
+    auto start1 = std::chrono::steady_clock::now();
     std::cout << "\n================================Test 2==================================================\n";
     std::cout << "****************Simulate FIFO replacement****************************" << std::endl;
-    in.open("small_refs.txt");
-    auto start1 = std::chrono::steady_clock::now();
+    in.open("large_refs.txt");
+
     if (!in.is_open()) {
-        std::cerr << "Cannot open small_refs.txt to read. Please check your path." << std::endl;
+        std::cerr << "Cannot open large_refs.txt to read. Please check your path." << std::endl;
         return 1;
     }
     int value;
     // Create a vector to store the logical addresses
-    std::vector<int> small_refs2;
+    std::vector<int> large_refs;
     while (in >> value) {
-        small_refs.push_back(value);
+        large_refs.push_back(value);
     }
+    in.close();
     // Create a virtual memory simulation using FIFO replacement algorithm
     FIFOReplacement vm2(num_pages, num_frames);
-    for (std::vector<int>::const_iterator it = small_refs2.begin(); it != small_refs2.end(); ++it) {
+    for (std::vector<int>::const_iterator it = large_refs.begin(); it != large_refs.end(); ++it) {
         int page_num2 = (*it) >> page_offset_bits;
 
         bool isPageFault = vm2.access_page(page_num2, 0);
 
-        PageEntry pg = vm2.getPageEntry(page_num2);
+        PageEntry pg2 = vm2.getPageEntry(page_num2);
         std::cout << "Logical address: " << *it << ", \tpage number: " << page_num2;
-        std::cout << ", \tframe number = " << pg.frame_num << ", \tis page fault? " << isPageFault << std::endl;
+        std::cout << ", \tframe number = " << pg2.frame_num << ", \tis page fault? " << isPageFault << std::endl;
+
+    }
+    //in.close();
+
     auto end1 = std::chrono::steady_clock::now();
     auto duration1 = std::chrono::duration_cast<std::chrono::milliseconds>(end1 - start1);
-    }
-    in.close();
+
     vm2.print_statistics();
+    cout<< "Duration for Test 2:" << duration1.count() << " ms" << std::endl;
     // TODO: Add your code to calculate number of page faults using FIFO replacement algorithm
     // TODO: print the statistics and run-time
 
     std::cout << "****************Simulate LIFO replacement****************************" << std::endl;
-    // TODO: Add your code to calculate number of page faults using LIFO replacement algorithm
-    // TODO: print the statistics and run-time
-    auto start2 = std::chrono::steady_clock::now();
-    auto end2 = std::chrono::steady_clock::now();
-    auto duration2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start2);
+
+    //std::ifstream in;
+    // Open the samll reference file
+    in.open("small_refs.txt");
+    if (!in.is_open()) {
+        std::cerr << "Cannot open small_refs.txt to read. Please check your path." << std::endl;
+        return 1;
+    }
+    int val1;
+    // Create a vector to store the logical addresses
+    std::vector<int> small_refs1;
+    while (in >> val1) {
+        small_refs1.push_back(val);
+    }
+    in.close();
+    // Create a virtual memory simulation using FIFO replacement algorithm
+    FIFOReplacement vm1(num_pages, num_frames);
+    for (std::vector<int>::const_iterator it = small_refs1.begin(); it != small_refs1.end(); ++it) {
+        int page_num1 = (*it) >> page_offset_bits;
+
+        bool isPageFault = vm1.access_page(page_num1, 0);
+
+        PageEntry pg1 = vm1.getPageEntry(page_num1);
+        std::cout << "Logical address: " << *it << ", \tpage number: " << page_num1;
+        std::cout << ", \tframe number = " << pg1.frame_num << ", \tis page fault? " << isPageFault << std::endl;
+    }
+    //in.close();
+    vm1.print_statistics();
+
+    //auto start2 = std::chrono::steady_clock::now();
+    //auto end2 = std::chrono::steady_clock::now();
+    //auto duration2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start2);
     std::cout << "****************Simulate LRU replacement****************************" << std::endl;
     // TODO: Add your code to calculate number of page faults using LRU replacement algorithm
     // TODO: print the statistics and run-time
-    auto start3 = std::chrono::steady_clock::now();
-    auto end3 = std::chrono::steady_clock::now();
-    auto duration3 = std::chrono::duration_cast<std::chrono::milliseconds>(end3 - start3);
+    //auto start3 = std::chrono::steady_clock::now();
+    //auto end3 = std::chrono::steady_clock::now();
+    //auto duration3 = std::chrono::duration_cast<std::chrono::milliseconds>(end3 - start3);
 
 }
