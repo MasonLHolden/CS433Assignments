@@ -29,10 +29,11 @@ Replacement::Replacement(int num_pages, int num_frames)
 
 		page_table[i].dirty = false;
 
+    page_table[i].age = 0;
 	}
 
 	//initialize variables
-
+  
 
 	//Initialize free frames list
 	for (int i = 0; i< num_frames; i++) {
@@ -62,9 +63,9 @@ if(num_references==num_frames) {
 
 		// touch_page(page_num); //here???
 		//return false;
-        //if(is_write) {
-       	//	page_table[page_num].dirty = true;
-        //}
+        if(is_write) {
+       		page_table[page_num].dirty = true;
+        }
        //
      touch_page(page_num); //causing seg fault?
      	return false;
@@ -84,9 +85,9 @@ if(num_references==num_frames) {
             page_table[page_num].frame_num = frame;
             page_table[page_num].valid = true;
 
-      //      if(is_write) {
-        //      page_table[page_num].dirty = true;
-          //  }
+           if(is_write) {
+             page_table[page_num].dirty = true;
+           }
 
             load_page(page_num);
           }
