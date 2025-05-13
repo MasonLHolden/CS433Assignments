@@ -21,7 +21,7 @@ LRUReplacement::LRUReplacement(int num_pages, int num_frames)
       page_table[i].valid = false;
       page_table[i].frame_num = -1;
     }
-
+    page_hits = 0;
 
 
     //all frames initially free
@@ -35,6 +35,10 @@ LRUReplacement::~LRUReplacement()
 // Accesss a page alreay in physical memory
 void LRUReplacement::touch_page(int page_num)
 {
+  //call base class method first
+  Replacement::touch_page(page_num);
+
+  //update LRU list - remove page if it exists, then add to back
     list<int>::iterator it = find(lru_list.begin(), lru_list.end(), page_num);
     if(it != lru_list.end()) {
       lru_list.erase(it);
@@ -47,7 +51,9 @@ void LRUReplacement::touch_page(int page_num)
 
 // Access an invalid page, but free frames are available
 void LRUReplacement::load_page(int page_num) {
+  
 
+  
   // find first available free frame
       int frame = -1;
       for(int i = 0; i < num_frames; i++) {
@@ -78,12 +84,16 @@ void LRUReplacement::load_page(int page_num) {
 // Access an invalid page and no free frames are available
 int LRUReplacement::replace_page(int page_num) {
 
+  int victim_frame = -1;
+
+  if(!lru_list.empty())
+  {
     //get least recently used page
     int lru_page_num = lru_list.front();
     lru_list.pop_front();
 
     //get frame occupied by LRU page
-    int victim_frame = page_table[lru_page_num].frame_num;
+    victim_frame = page_table[lru_page_num].frame_num;
 
     //mark the LRU page as invalid  in the page table
     page_table[lru_page_num].valid = false;
@@ -102,5 +112,8 @@ int LRUReplacement::replace_page(int page_num) {
     //Update counters
     page_faults++;
     replacements++;
+
+    lru_list.push_back(page_num);
+  }
     return victim_frame;
 }
