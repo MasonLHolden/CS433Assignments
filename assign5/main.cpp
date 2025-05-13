@@ -1,166 +1,127 @@
-// Remember to add comments to your code
+/**
+* Assignment 5: Page replacement algorithms
+ * @file fifo_replacement.cpp
+ * @author Mason Lavender Holden, Judah Fisher
+ * @brief A class implementing the FIFO page replacement algorithms
+ * @version 0.1
+ */
+//You must complete the all parts marked as "TODO". Delete "TODO" after you are done.
+// Remember to add sufficient and clear comments to your code
 
-#include <iostream>
-#include <fstream>
-#include <cstdlib>
-#include <cmath>
-#include <vector>
-#include <chrono>
 #include "fifo_replacement.h"
-#include "lru_replacement.h"
-#include "lifo_replacement.h"
+#include <iostream>
 
-/*
-Main tasks:
-Fix access page with the counter for replacement page
-Finish the main.cpp drivers
-
-*/
-
- 
-// Check if an integer is power of 2
-bool isPowerOfTwo(unsigned int x) {
-    /* First x in the below expression is for the case when x is 0 */
-    return x && (!(x & (x - 1)));
+FIFOReplacement::FIFOReplacement(int num_pages, int num_frames)
+: Replacement(num_pages, num_frames)
+{
+//this->num_pages = num_pages;
+//this->num_frames = num_frames;
+  
+  for(int i = 0; i < num_pages; i++)
+    {
+      page_table[i].age = 0;
+    }
 }
 
-int main(int argc, char *argv[]) {
-    //Print basic information about the program
-    std::cout << "=================================================================" << std::endl;
-    std::cout << "CS 433 Programming assignment 5" << std::endl;
-    std::cout << "Author: xxxxxx and xxxxxxx" << std::endl;
-    std::cout << "Date: xx/xx/20xx" << std::endl;
-    std::cout << "Course: CS433 (Operating Systems)" << std::endl;
-    std::cout << "Description : Program to simulate different page replacement algorithms" << std::endl;
-    std::cout << "=================================================================\n" << std::endl;
+FIFOReplacement::~FIFOReplacement() {
+    //don't think anything needs to be added here.
+}
 
-    if (argc < 3) {
-        // user does not enter enough parameters
-        std::cout << "You have entered too few parameters to run the program.  You must enter" << std::endl
-                  << "two command-line arguments:" << std::endl
-                  << " - page size (in bytes): between 256 and 8192, inclusive" << std::endl
-                  << " - physical memory size (in megabytes): between 4 and 64, inclusive" << std::endl;
-        exit(1);
-    }
+// Access an invalid page, but free frames are available
+    /**
+     * @brief Access an invalid page, but free frames are available.
+     * Assign the page to an available frame, not replacement needed
+     * It may be overridden in a subclass 
+     * @param page_num The logical page number.
+     */
+void FIFOReplacement::load_page(int page_num) {
 
-    // Page size and Physical memory size
-    // Their values should be read from command-line arguments, and always a power of 2
-    unsigned int page_size = atoi(argv[1]);
-    if (!isPowerOfTwo(page_size)) {
-        std::cout << "You have entered an invalid parameter for page size (bytes)" << std::endl
-                  << "  (must be an power of 2 between 256 and 8192, inclusive)." << std::endl;
-        return 1;
-    }
-    unsigned int phys_mem_size = atoi(argv[2]) << 20; // convert from MB to bytes
-    if (!isPowerOfTwo(phys_mem_size)) {
-        std::cout << "You have entered an invalid parameter for physical memory size (MB)" << std::endl
-                  << "  (must be an even integer between 4 and 64, inclusive)." << std::endl;
-        return 1;
-    }
+if (free_frames.size() > 0)
+  {
+    int free_frame = -1;
+    auto it = free_frames.begin();
+    for (int i = 0; i < free_frames.size(); i++)
+      {
+          int frame_index = *it;
+          if(!page_table[frame_index].valid)
+            {
+                free_frame = frame_index;
+                break;
+            }
+      }
 
-    // calculate number of pages and frames;
-    int logic_mem_bits = 27;        // 27-bit logical memory (128 MB logical memory assumed by the assignment)
-    int phys_mem_bits = std::log2(
-            phys_mem_size);        // Num of bits for physical memory addresses, calculated from physical memory size, e.g. 24 bits for 16 MB memory
-    int page_offset_bits = std::log2(
-            page_size);                // Num of bits for page offset, calculated from page size, e.g. 12 bits for 4096 byte page
-    // Number of pages in logical memory = 2^(logic_mem_bits - page_bit)
-    int num_pages = 1 << (logic_mem_bits - page_offset_bits);
-    // Number of free frames in physical memory = 2^(phys_mem_bits - page_offset_bits)
-    int num_frames = 1 << (phys_mem_bits - page_offset_bits);
+      if(free_frame != -1)
+        {
+            page_table[page_num].valid = true;
+            page_table[page_num].frame_num = free_frame;
+          page_table[page_num].age = 0;
 
-    std::cout << "Page size = " << page_size << " bytes" << std::endl;
-    std::cout << "Physical Memory size = " << phys_mem_size << " bytes" << std::endl;
-    std::cout << "Number of pages = " << num_pages << std::endl;
-    std::cout << "Number of physical frames = " << num_frames << std::endl;
+            free_frames.remove(free_frame);
 
-    // Test 1: Read and simulate the small list of logical addresses from the input file "small_refs.txt"
-    std::cout << "\n================================Test 1==================================================\n";
-     std::ifstream in;
-    // Open the samll reference file
-    in.open("small_refs.txt");
-    if (!in.is_open()) {
-        std::cerr << "Cannot open small_refs.txt to read. Please check your path." << std::endl;
-        return 1;
-    }
-    int val;
-    // Create a vector to store the logical addresses
-    std::vector<int> small_refs;
-    while (in >> val) {
-        small_refs.push_back(val);
-    }
-    in.close();
-    // Create a virtual memory simulation using FIFO replacement algorithm
-    FIFOReplacement FIFO_vm(num_pages, num_frames);
-    for (std::vector<int>::const_iterator it = small_refs.begin(); it != small_refs.end(); ++it) {
-        int page_num = (*it) >> page_offset_bits;
+          for(int i = 0; i < num_pages; i++)
+            {
+              if(i != page_num && page_table[i].valid)
+              {
+                page_table[i].age++;
+              }
+            }
 
-        bool isPageFault = FIFO_vm.access_page(page_num, 0);
 
-        PageEntry pg = FIFO_vm.getPageEntry(page_num);
-        std::cout << "Logical address: " << *it << ", \tpage number: " << page_num;
-        std::cout << ", \tframe number = " << pg.frame_num << ", \tis page fault? " << isPageFault << std::endl;
-    }
-    //in.close();
-    FIFO_vm.print_statistics();
-
-    // Test 2: Read and simulate the large list of logical addresses from the input file "large_refs.txt"
-    auto start1 = std::chrono::steady_clock::now();
-    std::cout << "\n================================Test 2==================================================\n";
-    std::cout << "****************Simulate FIFO replacement****************************" << std::endl;
-  auto start2 = std::chrono::steady_clock::now();
-
-  in.open("large_refs.txt");
-  if (!in.is_open()) {
-      std::cerr << "Cannot open large_refs.txt to read. Please check your path." << std::endl;
-      return 1;
+        }
   }
 
-  int value;
-  // Create a vector to store the logical addresses
-  std::vector<int> large_refs;
-  while (in >> value) {
-      large_refs.push_back(value);
-  }
-  in.close();
 
-  // Create a virtual memory simulation using FIFO replacement algorithm
-  FIFOReplacement fifo_vm_large(num_pages, num_frames);
-  for (std::vector<int>::const_iterator it = large_refs.begin(); it != large_refs.end(); ++it) {
-      int page_num = (*it) >> page_offset_bits;
+}
 
-      bool isPageFault = fifo_vm_large.access_page(page_num, false);
+  /**
+	 * @brief Access an invalid page and no free frame is available.
+     * Select a victim page to be replaced.
+	 * It is a pure virtual function to be implemented in specific replacement subclasses.
+     * @param page_num  The logical page number of the desired page.
+	 * @return Selected victim page #
+	 */
+// Access an invalid page and no free frames are available
+int FIFOReplacement::replace_page(int page_num) {
+    //find oldest index,
+    int victim = -1;
+    int oldest = -999;//starting oldest at tiny number
+    int victim_page = -1;
+    int oIndex; //the index where the oldest value is
+ for(int i = 0; i < num_pages; i++)
+ {
+    if(page_table[i].valid && (oldest == -999||page_table[i].age > oldest))
+    {
+            //replace oldest index
+        victim = page_table[i].frame_num;
+        oldest = page_table[i].age;
+        victim_page = i;
+        oIndex = i;
+    }
+ }
 
-  }
+  if(victim_page != -1)
+  {
+//mark victim as invalid
+    page_table[victim_page].valid = false;
+    page_table[victim_page].frame_num = -1;
 
-  auto end2 = std::chrono::steady_clock::now();
-  auto duration2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start1);
+    //update new page
+    page_table[page_num].valid = true;
+    page_table[page_num].frame_num = victim;
+    //reset the newest that replaced the oldest's age to 0
+    page_table[page_num].age = 0;
 
-  fifo_vm_large.print_statistics();
-  std::cout << "Duration for FIFO: " << duration2.count() * 0.001 << " seconds" << std::endl;
-
-    //auto start2 = std::chrono::steady_clock::now();
-    //auto end2 = std::chrono::steady_clock::now();
-    //auto duration2 = std::chrono::duration_cast<std::chrono::milliseconds>(end2 - start2);
-    std::cout << "****************Simulate LRU replacement****************************" << std::endl;
-    // TODO: Add your code to calculate number of page faults using LRU replacement algorithm
-    // TODO: print the statistics and run-time
-  auto start3 = std::chrono::steady_clock::now();
-
-  // Create a virtual memory simulation using LRU replacement algorithm
-  LRUReplacement lru_vm_large(num_pages, num_frames);
-  for (std::vector<int>::const_iterator it = large_refs.begin(); it != large_refs.end(); ++it) {
-      int page_num = (*it) >> page_offset_bits;
-      lru_vm_large.access_page(page_num, false);
-  }
-
-  auto end3 = std::chrono::steady_clock::now();
-  auto duration3 = std::chrono::duration_cast<std::chrono::milliseconds>(end3 - start3);
-
-  lru_vm_large.print_statistics();
-  std::cout << "Duration for LRU: " << duration3.count() * 0.001 << " seconds" << std::endl;
-    //auto start3 = std::chrono::steady_clock::now();
-    //auto end3 = std::chrono::steady_clock::now();
-    //auto duration3 = std::chrono::duration_cast<std::chrono::milliseconds>(end3 - start3);
-
+  
+    //increment age for everything.
+    for (int i = 0; i < num_pages; i++)
+    {
+      if(i != page_num && page_table[i].valid)
+      {
+        page_table[i].age++;
+      }
+    }
+  } 
+    //reset the newest that replaced the oldest's age to 0
+    //increment age for everything.
+    return victim;
 }
