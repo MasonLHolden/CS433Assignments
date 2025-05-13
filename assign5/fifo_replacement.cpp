@@ -16,7 +16,11 @@ FIFOReplacement::FIFOReplacement(int num_pages, int num_frames)
 {
 //this->num_pages = num_pages;
 //this->num_frames = num_frames;
-
+  
+  for(int i = 0; i < num_pages; i++)
+    {
+      page_table[i].age = 0;
+    }
 }
 
 FIFOReplacement::~FIFOReplacement() {
@@ -50,8 +54,17 @@ if (free_frames.size() > 0)
         {
             page_table[page_num].valid = true;
             page_table[page_num].frame_num = free_frame;
+          page_table[page_num].age = 0;
 
             free_frames.remove(free_frame);
+
+          for(int i = 0; i < num_pages; i++)
+            {
+              if(i != page_num && page_table[i].valid)
+              {
+                page_table[i].age++;
+              }
+            }
 
 
         }
@@ -70,30 +83,44 @@ if (free_frames.size() > 0)
 // Access an invalid page and no free frames are available
 int FIFOReplacement::replace_page(int page_num) {
     //find oldest index,
-    int victim;
- int oldest = -999;//starting oldest at tiny number
- int oIndex; //the index where the oldest value is
- for(int i = 0; i<0; i++)
+    int victim = -1;
+    int oldest = -999;//starting oldest at tiny number
+    int victim_page = -1;
+    int oIndex; //the index where the oldest value is
+ for(int i = 0; i < num_pages; i++)
  {
-    if(page_table[i].age > oldest)
+    if(page_table[i].valid && (oldest == -999||page_table[i].age > oldest))
     {
             //replace oldest index
-            victim = page_table[i].frame_num;
+        victim = page_table[i].frame_num;
         oldest = page_table[i].age;
+        victim_page = i;
         oIndex = i;
     }
  }
 
-    
-    
+  if(victim_page != -1)
+  {
+//mark victim as invalid
+    page_table[victim_page].valid = false;
+    page_table[victim_page].frame_num = -1;
+
+    //update new page
+    page_table[page_num].valid = true;
+    page_table[page_num].frame_num = victim;
     //reset the newest that replaced the oldest's age to 0
-    page_table[oIndex].age = 0;
+    page_table[page_num].age = 0;
+
+  
     //increment age for everything.
-    for (int i = 0; i < page_table.size; i++)
+    for (int i = 0; i < num_pages; i++)
     {
+      if(i != page_num && page_table[i].valid)
+      {
         page_table[i].age++;
+      }
     }
-    
+  } 
     //reset the newest that replaced the oldest's age to 0
     //increment age for everything.
     return victim;
