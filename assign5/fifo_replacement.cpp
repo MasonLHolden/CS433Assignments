@@ -1,51 +1,127 @@
 /**
 * Assignment 5: Page replacement algorithms
- * @file fifo_replacement.h
-  * @author Mason Lavender Holden, Judah Fisher
+ * @file fifo_replacement.cpp
+ * @author Mason Lavender Holden, Judah Fisher
  * @brief A class implementing the FIFO page replacement algorithms
  * @version 0.1
  */
 //You must complete the all parts marked as "TODO". Delete "TODO" after you are done.
 // Remember to add sufficient and clear comments to your code
 
-#pragma once
+#include "fifo_replacement.h"
+#include <iostream>
 
-// Remember to add comments to your code
+FIFOReplacement::FIFOReplacement(int num_pages, int num_frames)
+: Replacement(num_pages, num_frames)
+{
+//this->num_pages = num_pages;
+//this->num_frames = num_frames;
+  
+  for(int i = 0; i < num_pages; i++)
+    {
+      page_table[i].age = 0;
+    }
+}
 
-#include "replacement.h"
+FIFOReplacement::~FIFOReplacement() {
+    //don't think anything needs to be added here.
+}
 
-/**
- * @brief A class to simulate FIFO page replacement algorithm.
- */
-class FIFOReplacement : public Replacement {
-private:
-
-public:
-    /**
-     * @brief Constructor
-     * @param num_pages Total number of available free frames.
-     * @param num_frames Total number of free frames.
-     */
-    FIFOReplacement(int num_pages, int num_frames);
-
-    /**
-    * @brief Destructor
-    */
-    virtual ~FIFOReplacement();
-
+// Access an invalid page, but free frames are available
     /**
      * @brief Access an invalid page, but free frames are available.
-     * Assign the page to an available  frame, not replacement needed
+     * Assign the page to an available frame, not replacement needed
+     * It may be overridden in a subclass 
      * @param page_num The logical page number.
      */
-    virtual void load_page(int page_num);
+void FIFOReplacement::load_page(int page_num) {
 
-    /**
-     * @brief Access an invalid page, and there is no free frame.
-     * Replace the page with the page that has been in memory the longest.
-     * @param page_num The logical page number.
-     * @return Selected victim page #
-     */
-    virtual int replace_page(int page_num);
+if (free_frames.size() > 0)
+  {
+    int free_frame = -1;
+    auto it = free_frames.begin();
+    for (int i = 0; i < free_frames.size(); i++)
+      {
+          int frame_index = *it;
+          if(!page_table[frame_index].valid)
+            {
+                free_frame = frame_index;
+                break;
+            }
+      }
 
-};
+      if(free_frame != -1)
+        {
+            page_table[page_num].valid = true;
+            page_table[page_num].frame_num = free_frame;
+          page_table[page_num].age = 0;
+
+            free_frames.remove(free_frame);
+
+          for(int i = 0; i < num_pages; i++)
+            {
+              if(i != page_num && page_table[i].valid)
+              {
+                page_table[i].age++;
+              }
+            }
+
+
+        }
+  }
+
+
+}
+
+  /**
+	 * @brief Access an invalid page and no free frame is available.
+     * Select a victim page to be replaced.
+	 * It is a pure virtual function to be implemented in specific replacement subclasses.
+     * @param page_num  The logical page number of the desired page.
+	 * @return Selected victim page #
+	 */
+// Access an invalid page and no free frames are available
+int FIFOReplacement::replace_page(int page_num) {
+    //find oldest index,
+    int victim = -1;
+    int oldest = -999;//starting oldest at tiny number
+    int victim_page = -1;
+    int oIndex; //the index where the oldest value is
+ for(int i = 0; i < num_pages; i++)
+ {
+    if(page_table[i].valid && (oldest == -999||page_table[i].age > oldest))
+    {
+            //replace oldest index
+        victim = page_table[i].frame_num;
+        oldest = page_table[i].age;
+        victim_page = i;
+        oIndex = i;
+    }
+ }
+
+  if(victim_page != -1)
+  {
+//mark victim as invalid
+    page_table[victim_page].valid = false;
+    page_table[victim_page].frame_num = -1;
+
+    //update new page
+    page_table[page_num].valid = true;
+    page_table[page_num].frame_num = victim;
+    //reset the newest that replaced the oldest's age to 0
+    page_table[page_num].age = 0;
+
+  
+    //increment age for everything.
+    for (int i = 0; i < num_pages; i++)
+    {
+      if(i != page_num && page_table[i].valid)
+      {
+        page_table[i].age++;
+      }
+    }
+  } 
+    //reset the newest that replaced the oldest's age to 0
+    //increment age for everything.
+    return victim;
+}
